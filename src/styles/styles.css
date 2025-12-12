@@ -1,0 +1,460 @@
+/**
+ * OptiMine SPA Styles
+ * Custom styles for Single Page Application
+ */
+
+/* ============================================
+   CSS VARIABLES
+   ============================================ */
+:root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --border: 240 5.9% 90%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+}
+
+.dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --border: 240 3.7% 15.9%;
+    --card: 240 10% 5.9%;
+    --card-foreground: 0 0% 98%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+html, body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+}
+
+.glass {
+    background: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* ============================================
+   GPU ACCELERATED PAGE TRANSITIONS
+   No overlay - smooth CSS animations only
+   ============================================ */
+#spa-content {
+    will-change: opacity, transform;
+}
+
+.page-enter {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.page-exit {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.page-exit-active {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.2s ease-in, transform 0.2s ease-in;
+}
+
+/* ============================================
+   LOADER ANIMATION
+   ============================================ */
+.spa-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.spa-loader-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spa-spin 0.8s linear infinite;
+}
+
+.spa-loader-text {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+@keyframes spa-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   GPU accelerated with transform + opacity
+   ============================================ */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+}
+
+.animate-slide-down {
+    animation: slideDown 0.3s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.stagger-1 { animation-delay: 0.1s; opacity: 0; }
+.stagger-2 { animation-delay: 0.2s; opacity: 0; }
+.stagger-3 { animation-delay: 0.3s; opacity: 0; }
+.stagger-4 { animation-delay: 0.4s; opacity: 0; }
+.stagger-5 { animation-delay: 0.5s; opacity: 0; }
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.spa-toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.spa-toast {
+    padding: 0.875rem 1.25rem;
+    border-radius: 0.75rem;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 280px;
+    max-width: 400px;
+    pointer-events: auto;
+    animation: toastIn 0.3s ease;
+}
+
+.spa-toast.exiting {
+    animation: toastOut 0.3s ease forwards;
+}
+
+.spa-toast-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.spa-toast-message {
+    flex: 1;
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+}
+
+.spa-toast.success .spa-toast-icon { color: #22c55e; }
+.spa-toast.error .spa-toast-icon { color: #ef4444; }
+.spa-toast.warning .spa-toast-icon { color: #f59e0b; }
+.spa-toast.info .spa-toast-icon { color: hsl(var(--primary)); }
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* ============================================
+   AUTH TAB STYLES
+   ============================================ */
+.auth-tab {
+    color: hsl(var(--muted-foreground));
+    background: transparent;
+}
+
+.auth-tab.active {
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   NAVIGATION ACTIVE STATE
+   ============================================ */
+.spa-nav-link {
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.spa-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: hsl(var(--primary));
+    transition: width 0.3s ease;
+}
+
+.spa-nav-link.active {
+    color: hsl(var(--primary));
+}
+
+.spa-nav-link.active::after {
+    width: 100%;
+}
+
+.spa-mobile-nav-link.active {
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+/* ============================================
+   BORDER GLOW EFFECT
+   ============================================ */
+.border-glow {
+    position: relative;
+}
+
+.border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.5), transparent, hsl(var(--primary) / 0.3));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.border-glow:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--secondary) / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 640px) {
+    .spa-toast-container {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .spa-toast {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   TYPEWRITER EFFECT
+   ============================================ */
+.welcome-typewriter {
+    min-height: 1.5em;
+    display: inline-block;
+}
+
+.typewriter-active::after {
+    content: '|';
+    animation: blink-caret 0.75s step-end infinite;
+    color: #f59e0b;
+    font-weight: 300;
+    margin-left: 2px;
+}
+
+.typewriter-complete::after {
+    content: '';
+    animation: none;
+}
+
+.typewriter-welcome {
+    color: inherit;
+}
+
+.typewriter-username {
+    color: #f59e0b;
+    font-weight: 700;
+}
+
+@keyframes blink-caret {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Subtle glow effect when typing */
+.typewriter-active .typewriter-username {
+    text-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+}
+
+/* ============================================
+   STAT COUNTER ANIMATION
+   ============================================ */
+.stat-value {
+    display: inline-block;
+    min-width: 2ch;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+}
+
+.stat-card {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.stat-card:hover::before {
+    left: 100%;
+}
+
+/* Pulse effect when counter completes */
+@keyframes stat-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.stat-value.complete {
+    animation: stat-pulse 0.3s ease;
+}
+
+/* Number glow effect on hover */
+.stat-card:hover .stat-value {
+    text-shadow: 0 0 20px currentColor;
+}

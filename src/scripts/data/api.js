@@ -20,15 +20,15 @@ const api = {
     async request(endpoint, options = {}) {
         const url = `${BASE_URL}${endpoint}`;
         const token = localStorage.getItem(Config.storage.token);
-        
+
         const defaultHeaders = {
             'Content-Type': 'application/json'
         };
-        
+
         if (token) {
             defaultHeaders['Authorization'] = `Bearer ${token}`;
         }
-        
+
         const config = {
             ...options,
             headers: {
@@ -36,15 +36,15 @@ const api = {
                 ...options.headers
             }
         };
-        
+
         try {
             const response = await fetch(url, config);
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.message || 'Request failed');
             }
-            
+
             return data;
         } catch (error) {
             console.error('API Error:', error);
@@ -115,21 +115,28 @@ export const API = {
         optimize: (data) => api.post('/production/optimize', data)
     },
 
-    // AI Assistant endpoints - Connected to n8n
+    // AI Assistant endpoints - Connected to Backend AI Service
     ai: {
         chat: async (message) => {
-            // Direct n8n webhook integration - Production URL (workflow must be Active)
-            const N8N_WEBHOOK_URL = 'https://n8n.optiminev.site/webhook/chatbot123';
-            
-            console.log('🚀 Sending to n8n:', N8N_WEBHOOK_URL);
+            // Use backend proxy to AI Service (Docker container on port 8000)
+            const token = localStorage.getItem(Config.storage.token);
+
+            console.log('🚀 Sending to Backend AI Service:', `${BASE_URL}/ai/chat`);
             console.log('Message:', message);
-            
+
             try {
-                const response = await fetch(N8N_WEBHOOK_URL, {
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+
+                // Add Authorization header if token exists
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(`${BASE_URL}/ai/chat`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                    headers: headers,
                     body: JSON.stringify({
                         chatInput: message,
                         message: message,
@@ -138,7 +145,7 @@ export const API = {
                         language: document.documentElement.lang || 'id'
                     })
                 });
-                
+
                 // Try to get response body even if status is not ok
                 let data;
                 try {
@@ -149,31 +156,85 @@ export const API = {
                     console.error('Parse error:', parseError);
                     data = {};
                 }
-                
-                console.log('✅ n8n response status:', response.status);
-                console.log('✅ n8n response data:', data);
-                
-                // Check if this is an n8n error message
-                if (data.code === 0 && data.message) {
-                    throw new Error(`n8n Error: ${data.message}`);
+
+                console.log('✅ AI Service response status:', response.status);
+                console.log('✅ AI Service response data:', data);
+
+                // Check if this is an error message
+                if (data.error) {
+                    throw new Error(data.message || 'AI Service Error');
                 }
-                
+
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 // Return response in expected format
+                // Backend returns: { success: true, data: { response: "...", model_used: "..." } }
+                const aiResponse = data.data?.response || data.response || data.output || data.text || data.message || 'No response';
+
                 return {
                     success: true,
                     data: {
-                        response: data.output || data.text || data.response || data.message || JSON.stringify(data)
+                        response: aiResponse
                     }
                 };
             } catch (error) {
-                console.error('❌ Error connecting to n8n:', error);
+                console.error('❌ Error connecting to AI Service:', error);
                 throw error;
             }
         },
+
+        // AI Planning - Auto Recommend endpoint
+        plan: async (payload) => {
+            const token = localStorage.getItem(Config.storage.token);
+
+            console.log('🚀 Sending to AI Plan Service:', `${BASE_URL}/ai/plan`);
+            console.log('Payload:', payload);
+
+            try {
+                const headers = {
+                    'Content-Type': 'application/json',
+                };
+
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+
+                const response = await fetch(`${BASE_URL}/ai/plan`, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload)
+                });
+
+                let data;
+                try {
+                    const responseText = await response.text();
+                    console.log('📦 Raw plan response:', responseText);
+                    data = responseText ? JSON.parse(responseText) : {};
+                } catch (parseError) {
+                    console.error('Parse error:', parseError);
+                    data = {};
+                }
+
+                console.log('✅ AI Plan response status:', response.status);
+                console.log('✅ AI Plan response data:', data);
+
+                if (data.error) {
+                    throw new Error(data.message || 'AI Plan Service Error');
+                }
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return data;
+            } catch (error) {
+                console.error('❌ Error connecting to AI Plan Service:', error);
+                throw error;
+            }
+        },
+
         recommend: (context) => api.post('/ai/recommend', context)
     },
 

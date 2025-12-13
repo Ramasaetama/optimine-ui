@@ -1,0 +1,431 @@
+/**
+ * OptiMine SPA Styles
+ * Custom styles for Single Page Application transitions and components
+ */
+
+/* ============================================
+   TRANSITION OVERLAY
+   ============================================ */
+.spa-transition-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.spa-transition-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(240 60% 30%) 100%);
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spa-transition-overlay.active::before {
+    transform: translateY(0);
+}
+
+.spa-transition-overlay.exit::before {
+    transform: translateY(-100%);
+}
+
+/* Loader inside overlay */
+.spa-transition-overlay .spa-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.spa-transition-overlay.active .spa-loader {
+    opacity: 1;
+}
+
+.spa-transition-overlay.exit .spa-loader {
+    opacity: 0;
+}
+
+/* ============================================
+   LOADER ANIMATION
+   ============================================ */
+.spa-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.spa-loader-spinner {
+    width: 48px;
+    height: 48px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spa-spin 0.8s linear infinite;
+}
+
+.spa-loader-text {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+@keyframes spa-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Pulse animation for loader dots */
+.spa-loader-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.spa-loader-dots span {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 50%;
+    animation: spa-pulse 1.4s ease-in-out infinite;
+}
+
+.spa-loader-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.spa-loader-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes spa-pulse {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   PAGE CONTENT TRANSITIONS
+   ============================================ */
+.spa-content {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.spa-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Fade animations */
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.animate-fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+
+/* Staggered animations */
+.animate-stagger > * {
+    opacity: 0;
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-stagger > *:nth-child(1) { animation-delay: 0.1s; }
+.animate-stagger > *:nth-child(2) { animation-delay: 0.2s; }
+.animate-stagger > *:nth-child(3) { animation-delay: 0.3s; }
+.animate-stagger > *:nth-child(4) { animation-delay: 0.4s; }
+.animate-stagger > *:nth-child(5) { animation-delay: 0.5s; }
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.spa-toast-container {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    pointer-events: none;
+}
+
+.spa-toast {
+    padding: 0.875rem 1.25rem;
+    border-radius: 0.75rem;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 280px;
+    max-width: 400px;
+    pointer-events: auto;
+    animation: toastIn 0.3s ease;
+}
+
+.spa-toast.exiting {
+    animation: toastOut 0.3s ease forwards;
+}
+
+.spa-toast-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.spa-toast-message {
+    flex: 1;
+    font-size: 0.875rem;
+    color: hsl(var(--foreground));
+}
+
+/* Toast types */
+.spa-toast.success .spa-toast-icon {
+    color: #22c55e;
+}
+
+.spa-toast.error .spa-toast-icon {
+    color: #ef4444;
+}
+
+.spa-toast.warning .spa-toast-icon {
+    color: #f59e0b;
+}
+
+.spa-toast.info .spa-toast-icon {
+    color: hsl(var(--primary));
+}
+
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+/* ============================================
+   AUTH TAB STYLES
+   ============================================ */
+.auth-tab {
+    color: hsl(var(--muted-foreground));
+    background: transparent;
+}
+
+.auth-tab.active {
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* ============================================
+   NAVIGATION ACTIVE STATE
+   ============================================ */
+.spa-nav-link {
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.spa-nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: hsl(var(--primary));
+    transition: width 0.3s ease;
+}
+
+.spa-nav-link.active {
+    color: hsl(var(--primary));
+}
+
+.spa-nav-link.active::after {
+    width: 100%;
+}
+
+/* Mobile nav active state */
+.spa-mobile-nav-link.active {
+    color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+/* ============================================
+   CARD HOVER EFFECTS
+   ============================================ */
+[data-route] {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-route]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   SCROLLBAR STYLES
+   ============================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--secondary) / 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground) / 0.3);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 640px) {
+    .spa-toast-container {
+        left: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+    }
+
+    .spa-toast {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   THEME TOGGLE ANIMATION
+   ============================================ */
+#profile-theme-toggle span {
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* Dark mode specific toggle */
+html.dark #profile-theme-toggle {
+    background: hsl(var(--primary) / 0.3);
+}
+
+html.dark #profile-theme-toggle span {
+    background: hsl(var(--primary));
+}
+
+/* ============================================
+   BORDER GLOW EFFECT
+   ============================================ */
+.border-glow {
+    position: relative;
+}
+
+.border-glow::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.5), transparent, hsl(var(--primary) / 0.3));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.border-glow:hover::before {
+    opacity: 1;
+}
+
+/* ============================================
+   SKELETON LOADING
+   ============================================ */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        hsl(var(--secondary)) 0%,
+        hsl(var(--secondary) / 0.5) 50%,
+        hsl(var(--secondary)) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+    border-radius: 0.5rem;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ============================================
+   NO-FLASH BODY SETUP
+   ============================================ */
+html {
+    background-color: hsl(var(--background));
+}
+
+body {
+    opacity: 1;
+    transition: opacity 0.1s ease;
+}
+
+body.loading {
+    opacity: 0;
+}

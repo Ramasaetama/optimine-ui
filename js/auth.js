@@ -32,7 +32,7 @@ const AuthPage = (() => {
     // ========================================
     // TRANSLATION HELPER
     // ========================================
-    
+
     const t = (key) => {
         if (window.OptiMine && window.OptiMine.LanguageManager) {
             return window.OptiMine.LanguageManager.t(key);
@@ -150,7 +150,7 @@ const AuthPage = (() => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        
+
         if (state.isLoading) return;
 
         const email = document.getElementById('login-email').value.trim();
@@ -172,7 +172,7 @@ const AuthPage = (() => {
 
         try {
             // Call real API
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://139.59.224.58:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -199,7 +199,7 @@ const AuthPage = (() => {
 
             // Success - redirect to home or saved redirect
             showToast('success', t('auth.loginSuccess') || 'Login successful! Redirecting...');
-            
+
             setTimeout(() => {
                 const redirectUrl = localStorage.getItem('optimine-redirect') || 'index.html';
                 localStorage.removeItem('optimine-redirect');
@@ -215,7 +215,7 @@ const AuthPage = (() => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-        
+
         if (state.isLoading) return;
 
         const fullName = document.getElementById('register-name').value.trim();
@@ -259,17 +259,17 @@ const AuthPage = (() => {
 
         try {
             // Prepare data for registration
-            const registerData = { 
-                nama: fullName, 
-                email, 
-                password, 
-                role 
+            const registerData = {
+                nama: fullName,
+                email,
+                password,
+                role
             };
-            
+
             console.log('Sending registration data:', registerData);
 
             // Call real API for registration
-            const registerResponse = await fetch('http://localhost:5000/register', {
+            const registerResponse = await fetch('http://139.59.224.58:5000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -285,7 +285,7 @@ const AuthPage = (() => {
             }
 
             // Auto login after successful registration
-            const loginResponse = await fetch('http://localhost:5000/login', {
+            const loginResponse = await fetch('http://139.59.224.58:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -319,7 +319,7 @@ const AuthPage = (() => {
 
             // Success - redirect to home
             showToast('success', t('auth.registerSuccess') || 'Account created successfully! Redirecting...');
-            
+
             setTimeout(() => {
                 window.location.href = 'index.html';
             }, 1500);
@@ -386,7 +386,7 @@ const AuthPage = (() => {
 
     const toggleRoleDropdown = () => {
         const isHidden = roleDropdown.classList.contains('hidden');
-        
+
         if (isHidden) {
             roleDropdown.classList.remove('hidden');
             roleChevron.classList.add('open');
@@ -426,7 +426,7 @@ const AuthPage = (() => {
 
     const setupPasswordToggles = () => {
         const toggles = document.querySelectorAll('.password-toggle');
-        
+
         toggles.forEach(toggle => {
             toggle.addEventListener('click', () => {
                 const input = toggle.parentElement.querySelector('input');
@@ -470,7 +470,7 @@ const AuthPage = (() => {
         loginForm.classList.add('hidden');
         registerForm.classList.add('hidden');
         forgotPasswordForm.classList.remove('hidden');
-        
+
         // Hide tabs
         loginTab.parentElement.classList.add('hidden');
     };
@@ -479,7 +479,7 @@ const AuthPage = (() => {
         state.currentView = 'login';
         forgotPasswordForm.classList.add('hidden');
         loginForm.classList.remove('hidden');
-        
+
         // Show tabs
         loginTab.parentElement.classList.remove('hidden');
     };
@@ -509,7 +509,7 @@ const AuthPage = (() => {
         // Password confirmation
         const confirmPassword = document.getElementById('register-confirm-password');
         const password = document.getElementById('register-password');
-        
+
         if (confirmPassword && password) {
             confirmPassword.addEventListener('blur', () => {
                 if (confirmPassword.value && confirmPassword.value !== password.value) {
@@ -530,7 +530,7 @@ const AuthPage = (() => {
         if (!field) return;
 
         field.classList.add('error');
-        
+
         // Remove existing error message
         const existingError = field.parentElement.querySelector('.error-message');
         if (existingError) existingError.remove();
@@ -547,7 +547,7 @@ const AuthPage = (() => {
         if (!field) return;
 
         field.classList.remove('error');
-        
+
         const errorMessage = field.parentElement.querySelector('.error-message');
         if (errorMessage) errorMessage.remove();
     };
@@ -561,7 +561,7 @@ const AuthPage = (() => {
 
     const setLoading = (loading, form) => {
         state.isLoading = loading;
-        
+
         const submitBtn = form.querySelector('.auth-submit') || form.querySelector('button[type="submit"]') || form.querySelector('#send-reset-link');
         if (!submitBtn) return;
 
@@ -627,12 +627,12 @@ function handleLogout() {
     localStorage.removeItem('optimine-logged-in');
     localStorage.removeItem('optimine-user');
     localStorage.removeItem('optimine-redirect');
-    
+
     // Show toast if available
     if (window.OptiMine && window.OptiMine.Toast) {
         window.OptiMine.Toast.show('Logged out successfully', 'success');
     }
-    
+
     // Redirect to home
     setTimeout(() => {
         window.location.href = 'index.html';

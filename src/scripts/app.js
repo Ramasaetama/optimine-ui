@@ -25,7 +25,7 @@ const Model = {
         this.state.theme = localStorage.getItem(Config.storage.theme) || Config.defaults.theme;
         this.state.language = localStorage.getItem(Config.storage.language) || Config.defaults.language;
         this.state.isAuthenticated = localStorage.getItem(Config.storage.isLoggedIn) === 'true';
-        
+
         const savedUser = localStorage.getItem(Config.storage.user);
         if (savedUser) {
             try {
@@ -34,7 +34,7 @@ const Model = {
                 this.state.user = null;
             }
         }
-        
+
         return this;
     },
 
@@ -105,10 +105,10 @@ const View = {
         this.elements.content = document.getElementById('spa-content');
         this.elements.navbar = document.getElementById('header');
         this.elements.toastContainer = document.getElementById('toast-container');
-        
+
         // Apply initial theme
         document.documentElement.classList.toggle('dark', Model.getState('theme') === 'dark');
-        
+
         return this;
     },
 
@@ -118,47 +118,47 @@ const View = {
         if (!this.elements.content) {
             this.elements.content = document.getElementById('spa-content');
         }
-        
+
         const { content } = this.elements;
-        
+
         if (!content) {
             console.error('SPA content element not found');
             return;
         }
-        
+
         // Check if this is initial render (content is empty)
         const isInitialRender = content.innerHTML.trim() === '';
-        
+
         if (!isInitialRender) {
             // Start exit animation (fade out) only if not initial render
             content.classList.add('page-exit');
             content.classList.add('page-exit-active');
-            
+
             await this.delay(200); // Exit animation duration
         }
-        
+
         // Update content
         content.innerHTML = html;
-        
+
         // Remove exit classes
         content.classList.remove('page-exit', 'page-exit-active');
-        
+
         // Start enter animation (fade in + slide up)
         content.classList.add('page-enter');
-        
+
         // Force reflow
         void content.offsetWidth;
-        
+
         content.classList.add('page-enter-active');
-        
+
         // Notify route changed
         EventBus.emit('routeChanged', routeName);
-        
+
         await this.delay(500); // Enter animation duration
-        
+
         // Cleanup
         content.classList.remove('page-enter', 'page-enter-active');
-        
+
         // Re-init icons
         if (window.lucide) {
             window.lucide.createIcons();
@@ -205,7 +205,7 @@ const View = {
         `;
 
         container.appendChild(toast);
-        
+
         if (window.lucide) {
             window.lucide.createIcons();
         }
@@ -250,7 +250,7 @@ const Presenter = {
     async handleLogin(email, password) {
         try {
             // Call real API
-            const response = await fetch('http://localhost:5000/login', {
+            const response = await fetch('http://139.59.224.58:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -271,17 +271,17 @@ const Presenter = {
                 role: result.data.role,
                 token: result.data.token
             };
-            
+
             // Save token to localStorage
             localStorage.setItem('optimine-token', result.data.token);
-            
+
             Model.login(user);
             View.showToast('Login berhasil!', 'success');
-            
+
             setTimeout(() => {
                 Router.navigate('home');
             }, 500);
-            
+
             return true;
         } catch (error) {
             View.showToast('Login gagal: ' + error.message, 'error');
@@ -293,15 +293,15 @@ const Presenter = {
     async handleRegister(name, email, password, role) {
         try {
             // Call real API for registration
-            const registerResponse = await fetch('http://localhost:5000/register', {
+            const registerResponse = await fetch('http://139.59.224.58:5000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 
-                    nama: name, 
-                    email, 
-                    password, 
+                body: JSON.stringify({
+                    nama: name,
+                    email,
+                    password,
                     role: role || 'admin'
                 })
             });
@@ -314,7 +314,7 @@ const Presenter = {
             }
 
             // Auto login after successful registration
-            const loginResponse = await fetch('http://localhost:5000/login', {
+            const loginResponse = await fetch('http://139.59.224.58:5000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -332,10 +332,10 @@ const Presenter = {
                     role: loginResult.data.role,
                     token: loginResult.data.token
                 };
-                
+
                 // Save token to localStorage
                 localStorage.setItem('optimine-token', loginResult.data.token);
-                
+
                 Model.login(user);
             } else {
                 // If auto-login fails, just create user object from registration data
@@ -347,13 +347,13 @@ const Presenter = {
                 };
                 Model.login(user);
             }
-            
+
             View.showToast('Registrasi berhasil!', 'success');
-            
+
             setTimeout(() => {
                 Router.navigate('home');
             }, 500);
-            
+
             return true;
         } catch (error) {
             View.showToast('Registrasi gagal: ' + error.message, 'error');
@@ -380,10 +380,10 @@ export const App = {
         Model.init();
         View.init();
         Presenter.init();
-        
+
         // Update auth UI on init
         View.updateAuthUI(Model.getState('isAuthenticated'), Model.getState('user'));
-        
+
         console.log('App initialized');
         return this;
     }

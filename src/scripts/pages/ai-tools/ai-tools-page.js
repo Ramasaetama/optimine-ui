@@ -8,9 +8,9 @@ import { LanguageManager } from '../../utils/LanguageManager.js';
 import { App } from '../../app.js';
 
 const template = () => {
-        const t = (key) => LanguageManager.t(key);
-        
-        return `
+    const t = (key) => LanguageManager.t(key);
+
+    return `
             <div class="min-h-screen bg-background">
                 <!-- AI Tools Content -->
                 <div class="container mx-auto px-4 py-8">
@@ -79,7 +79,7 @@ const template = () => {
                         <!-- Status Indicator -->
                         <div class="mt-4 flex items-center justify-center gap-2 text-sm">
                             <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            <span class="text-muted-foreground">AI Online - Terhubung ke n8n</span>
+                            <span class="text-muted-foreground">AI Online - Terhubung ke AI Service</span>
                         </div>
                     </div>
                 </div>
@@ -88,68 +88,68 @@ const template = () => {
 };
 
 const afterRender = () => {
-        console.log('🤖 AI Tools Page - Initializing...');
-        
-        const chatMessages = document.getElementById('chat-messages');
-        const chatForm = document.getElementById('chat-form');
-        const chatInput = document.getElementById('chat-input');
-        const sendBtn = document.getElementById('send-btn');
-        const typingIndicator = document.getElementById('typing-indicator');
+    console.log('🤖 AI Tools Page - Initializing...');
 
-        // Enable/disable send button based on input
-        chatInput.addEventListener('input', () => {
-            sendBtn.disabled = !chatInput.value.trim();
-        });
+    const chatMessages = document.getElementById('chat-messages');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const typingIndicator = document.getElementById('typing-indicator');
 
-        // Handle form submit
-        chatForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const message = chatInput.value.trim();
-            
-            if (!message) return;
+    // Enable/disable send button based on input
+    chatInput.addEventListener('input', () => {
+        sendBtn.disabled = !chatInput.value.trim();
+    });
 
-            // Add user message
-            addMessage(message, 'user');
-            
-            // Clear input
-            chatInput.value = '';
-            sendBtn.disabled = true;
+    // Handle form submit
+    chatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
 
-            // Show typing indicator
-            typingIndicator.classList.remove('hidden');
-            scrollToBottom();
+        if (!message) return;
 
-            try {
-                // Send to n8n via API
-                const response = await API.ai.chat(message);
-                
-                // Hide typing indicator
-                typingIndicator.classList.add('hidden');
-                
-                // Add AI response
-                if (response.success && response.data.response) {
-                    addMessage(response.data.response, 'ai');
-                } else {
-                    addMessage('Maaf, terjadi kesalahan. Silakan coba lagi.', 'ai');
-                }
-            } catch (error) {
-                console.error('Error sending message:', error);
-                typingIndicator.classList.add('hidden');
-                addMessage('Maaf, saya tidak dapat terhubung ke AI server. Silakan coba lagi nanti.', 'ai');
+        // Add user message
+        addMessage(message, 'user');
+
+        // Clear input
+        chatInput.value = '';
+        sendBtn.disabled = true;
+
+        // Show typing indicator
+        typingIndicator.classList.remove('hidden');
+        scrollToBottom();
+
+        try {
+            // Send to n8n via API
+            const response = await API.ai.chat(message);
+
+            // Hide typing indicator
+            typingIndicator.classList.add('hidden');
+
+            // Add AI response
+            if (response.success && response.data.response) {
+                addMessage(response.data.response, 'ai');
+            } else {
+                addMessage('Maaf, terjadi kesalahan. Silakan coba lagi.', 'ai');
             }
-        });
+        } catch (error) {
+            console.error('Error sending message:', error);
+            typingIndicator.classList.add('hidden');
+            addMessage('Maaf, saya tidak dapat terhubung ke AI server. Silakan coba lagi nanti.', 'ai');
+        }
+    });
 
-        // Focus input
-        chatInput.focus();
+    // Focus input
+    chatInput.focus();
 
-        // Helper functions
-        function addMessage(content, type) {
-            const timestamp = new Date().toLocaleTimeString('id-ID', { hour: 'numeric', minute: '2-digit' });
-            const messageEl = document.createElement('div');
-            messageEl.className = 'flex items-start gap-3 animate-fade-in';
+    // Helper functions
+    function addMessage(content, type) {
+        const timestamp = new Date().toLocaleTimeString('id-ID', { hour: 'numeric', minute: '2-digit' });
+        const messageEl = document.createElement('div');
+        messageEl.className = 'flex items-start gap-3 animate-fade-in';
 
-            if (type === 'ai') {
-                messageEl.innerHTML = `
+        if (type === 'ai') {
+            messageEl.innerHTML = `
                     <div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
                         <svg class="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -162,8 +162,8 @@ const afterRender = () => {
                         <span class="text-xs text-muted-foreground mt-1 block">${timestamp}</span>
                     </div>
                 `;
-            } else {
-                messageEl.innerHTML = `
+        } else {
+            messageEl.innerHTML = `
                     <div class="flex-1"></div>
                     <div class="flex-shrink-0 max-w-[70%]">
                         <div class="bg-primary text-white rounded-2xl rounded-br-sm p-4">
@@ -177,23 +177,23 @@ const afterRender = () => {
                         </svg>
                     </div>
                 `;
-            }
-
-            chatMessages.appendChild(messageEl);
-            scrollToBottom();
         }
 
-        function scrollToBottom() {
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
+        chatMessages.appendChild(messageEl);
+        scrollToBottom();
+    }
 
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-        console.log('✅ AI Tools Page - Ready!');
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    console.log('✅ AI Tools Page - Ready!');
 };
 
 export const aiToolsPage = async () => {

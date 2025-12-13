@@ -396,17 +396,56 @@ const PlanningPage = {
 
         } catch (error) {
             console.error('❌ Error generating plan:', error);
+            console.log('🎭 Menggunakan Demo Mode karena API belum tersedia...');
+
             await loadingPromise;
 
-            if (window.OptiMine && window.OptiMine.Toast) {
-                window.OptiMine.Toast.error('Gagal menghasilkan rencana. Silakan coba lagi.');
-            }
+            // Demo mode - show sample result when API is not available
+            const demoResult = this.generateDemoResult();
+            this.state.result = demoResult;
+            this.renderResultDashboard(demoResult);
 
-            if (generateBtn) generateBtn.classList.remove('hidden');
-            if (loadingContainer) loadingContainer.classList.add('hidden');
+            if (window.OptiMine && window.OptiMine.Toast) {
+                window.OptiMine.Toast.info('Demo Mode: Menampilkan contoh hasil (Backend belum terhubung)');
+            }
         } finally {
             this.state.isLoading = false;
         }
+    },
+
+    // ========================================
+    // Demo Mode - Sample Result Generator
+    // ========================================
+    generateDemoResult() {
+        const weatherClass = this.getWeatherClassFromRainfall(this.state.rainfall_mm);
+        const capacity = Math.round((this.state.activeVehicles / this.state.totalFleet) * 5000);
+
+        return {
+            success: true,
+            data: {
+                ml_predictions: {
+                    weather_classification: weatherClass,
+                    effective_capacity_ton_per_day: capacity,
+                    confidence_score: 0.87,
+                    production_forecast: capacity * 0.9
+                },
+                narrative_recommendation: `
+**Strategi Utama:**
+Berdasarkan analisis kondisi cuaca ${weatherClass} dengan curah hujan ${this.state.rainfall_mm.toFixed(1)}mm, disarankan untuk mengoptimalkan jadwal operasional pada shift pagi ketika kondisi jalan masih optimal.
+
+**Risiko Terdeteksi:**
+- Curah hujan ${this.state.rainfall_mm >= 1.0 ? 'tinggi dapat menurunkan kapasitas hauling sebesar 15-20%' : 'rendah, kondisi operasional normal'}
+- ${this.state.maintenanceStatus} unit kendaraan dalam perawatan perlu diprioritaskan untuk kembali beroperasi
+- Kecepatan angin ${this.state.wind_speed_kmh.toFixed(1)} km/h ${this.state.wind_speed_kmh > 5 ? 'perlu monitoring untuk keamanan operasi crane' : 'dalam batas aman'}
+
+**Tindakan Prioritas:**
+1. Fokuskan operasi pada ${this.state.activeVehicles} unit kendaraan aktif
+2. Koordinasi dengan jadwal kapal untuk optimasi loading
+3. Monitor kondisi jalan secara berkala terutama area ramp
+4. Siapkan contingency plan jika cuaca memburuk
+                `.trim()
+            }
+        };
     },
 
     // ========================================

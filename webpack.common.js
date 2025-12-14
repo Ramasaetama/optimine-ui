@@ -7,7 +7,7 @@ module.exports = {
     entry: './src/index.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         clean: true
     },
     module: {
@@ -43,13 +43,13 @@ module.exports = {
         }),
         new CopyPlugin({
             patterns: [
-                { 
-                    from: 'src/public', 
+                {
+                    from: 'src/public',
                     to: 'public',
                     noErrorOnMissing: true
                 },
-                { 
-                    from: 'assets', 
+                {
+                    from: 'assets',
                     to: 'assets',
                     noErrorOnMissing: true
                 },

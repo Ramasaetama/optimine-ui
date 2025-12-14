@@ -600,15 +600,39 @@ Berdasarkan analisis kondisi cuaca ${weatherClass} dengan curah hujan ${this.sta
         container.innerHTML = html;
     },
 
+    // Helper to strip markdown formatting
+    stripMarkdown(text) {
+        return text
+            // Remove **bold** markers
+            .replace(/\*\*([^*]+)\*\*/g, '$1')
+            // Remove *italic* markers
+            .replace(/\*([^*]+)\*/g, '$1')
+            // Remove ## headers
+            .replace(/^#{1,6}\s+/gm, '')
+            // Remove section labels like "Strategi Utama:" at start
+            .replace(/^(Strategi Utama|Risiko Terdeteksi|Tindakan Prioritas):\s*/gi, '')
+            .trim();
+    },
+
     createRecommendationCard(icon, title, content, gradient) {
-        let formattedContent = content;
-        if (content.includes('\n') || content.includes('•') || content.includes('-')) {
-            const lines = content.split(/[\n•]/).filter(line => line.trim() && !line.trim().startsWith('-'));
-            formattedContent = '<ul class="list-disc list-inside space-y-2">' +
-                lines.map(line => `<li class="text-muted-foreground">${line.trim()}</li>`).join('') +
-                '</ul>';
+        // Clean markdown formatting from content
+        let cleanContent = this.stripMarkdown(content);
+        let formattedContent = cleanContent;
+
+        if (cleanContent.includes('\n') || cleanContent.includes('•') || cleanContent.includes('-')) {
+            const lines = cleanContent.split(/[\n•-]/)
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
+
+            if (lines.length > 1) {
+                formattedContent = '<ul class="list-disc list-inside space-y-2">' +
+                    lines.map(line => `<li class="text-muted-foreground">${line}</li>`).join('') +
+                    '</ul>';
+            } else {
+                formattedContent = `<p class="text-muted-foreground">${cleanContent}</p>`;
+            }
         } else {
-            formattedContent = `<p class="text-muted-foreground">${content}</p>`;
+            formattedContent = `<p class="text-muted-foreground">${cleanContent}</p>`;
         }
 
         return `
@@ -626,27 +650,28 @@ Berdasarkan analisis kondisi cuaca ${weatherClass} dengan curah hujan ${this.sta
 
     parseNarrativeToSections(narrative) {
         const sections = { strategy: '', risks: '', actions: '' };
-        const paragraphs = narrative.split(/\n\n|\n/).filter(p => p.trim());
 
-        const strategyKw = ['strategi', 'strategy', 'rekomendasi utama'];
-        const riskKw = ['risiko', 'risk', 'peringatan', 'warning'];
-        const actionKw = ['tindakan', 'action', 'langkah', 'prioritas'];
+        // Use regex to match section headers and capture content until next section
+        // Pattern: **Section Name:** followed by content (with optional newlines)
+        const strategyMatch = narrative.match(/\*\*Strategi Utama:\*\*\s*([\s\S]*?)(?=\*\*Risiko|\*\*Tindakan|$)/i);
+        const risksMatch = narrative.match(/\*\*Risiko Terdeteksi:\*\*\s*([\s\S]*?)(?=\*\*Strategi|\*\*Tindakan|$)/i);
+        const actionsMatch = narrative.match(/\*\*Tindakan Prioritas:\*\*\s*([\s\S]*?)(?=\*\*Strategi|\*\*Risiko|$)/i);
 
-        paragraphs.forEach(para => {
-            const lower = para.toLowerCase();
-            if (strategyKw.some(kw => lower.includes(kw)) && !sections.strategy) {
-                sections.strategy = para;
-            } else if (riskKw.some(kw => lower.includes(kw)) && !sections.risks) {
-                sections.risks = para;
-            } else if (actionKw.some(kw => lower.includes(kw)) && !sections.actions) {
-                sections.actions = para;
-            } else if (!sections.strategy) {
-                sections.strategy = para;
-            }
-        });
+        if (strategyMatch && strategyMatch[1]) {
+            sections.strategy = strategyMatch[1].trim();
+        }
+        if (risksMatch && risksMatch[1]) {
+            sections.risks = risksMatch[1].trim();
+        }
+        if (actionsMatch && actionsMatch[1]) {
+            sections.actions = actionsMatch[1].trim();
+        }
 
-        if (sections.strategy && !sections.risks && !sections.actions && paragraphs.length >= 2) {
-            sections.strategy = paragraphs[0];
+        // Fallback: if no sections matched using the header pattern, 
+        // try splitting by double newlines
+        if (!sections.strategy && !sections.risks && !sections.actions) {
+            const paragraphs = narrative.split(/\n\n/).filter(p => p.trim());
+            if (paragraphs.length >= 1) sections.strategy = paragraphs[0];
             if (paragraphs.length >= 2) sections.risks = paragraphs[1];
             if (paragraphs.length >= 3) sections.actions = paragraphs.slice(2).join('\n');
         }

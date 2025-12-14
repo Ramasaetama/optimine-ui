@@ -216,6 +216,30 @@ const View = {
         }, duration);
     },
 
+    // Hide navbar (for auth page)
+    hideNavbar() {
+        if (this.elements.navbar) {
+            this.elements.navbar.classList.add('hidden');
+        }
+        // Also hide footer if exists
+        const footer = document.getElementById('footer');
+        if (footer) {
+            footer.classList.add('hidden');
+        }
+    },
+
+    // Show navbar
+    showNavbar() {
+        if (this.elements.navbar) {
+            this.elements.navbar.classList.remove('hidden');
+        }
+        // Also show footer
+        const footer = document.getElementById('footer');
+        if (footer) {
+            footer.classList.remove('hidden');
+        }
+    },
+
     // Utility delay
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));

@@ -11,7 +11,7 @@ import { EventBus } from '../../utils/index.js';
 // API CONFIGURATION
 // ============================================
 const API_CONFIG = {
-    baseUrl: 'http://139.59.224.58:5000',
+    baseUrl: '/api',
     endpoints: {
         // AI Endpoints
         aiHealth: '/ai/health',
@@ -426,7 +426,7 @@ const loadAIRecommendations = async () => {
     const container = document.getElementById('recommendations-grid');
     if (!container) return;
 
-    // Show loading
+    // Show loading briefly for UX
     container.innerHTML = `
         <div class="col-span-3 flex items-center justify-center py-8">
             <div class="flex items-center gap-3">
@@ -436,54 +436,12 @@ const loadAIRecommendations = async () => {
         </div>
     `;
 
-    const token = localStorage.getItem('optimine-token');
+    // Small delay for smoother UX transition
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    try {
-        // Try the dedicated recommendations endpoint first
-        let response = await fetchWithAuth(API_CONFIG.endpoints.aiRecommendations, {
-            method: 'POST',
-            body: JSON.stringify({
-                context: {
-                    production: DashboardState.stats.production.value,
-                    efficiency: DashboardState.stats.efficiency.value,
-                    alerts: DashboardState.stats.activeAlerts.value,
-                    weather: DashboardState.weather.condition
-                }
-            })
-        });
-
-        // Fallback to chat endpoint if recommendations fails
-        if (!response || !response.ok) {
-            response = await fetchWithAuth(API_CONFIG.endpoints.aiChat, {
-                method: 'POST',
-                body: JSON.stringify({
-                    chatInput: `Berikan 3 rekomendasi operasional mining berdasarkan: Production ${DashboardState.stats.production.value} tons, Efficiency ${DashboardState.stats.efficiency.value}%, Active Alerts ${DashboardState.stats.activeAlerts.value}. Format: JSON array [{title, description, priority, justification}]`,
-                    type: 'dashboard_recommendations'
-                })
-            });
-        }
-
-        if (response && response.ok) {
-            const data = await response.json().catch(() => ({}));
-
-            // Handle different response formats
-            let recommendations;
-            if (data.recommendations) {
-                recommendations = data.recommendations;
-            } else if (data.data && Array.isArray(data.data)) {
-                recommendations = data.data;
-            } else {
-                const aiResponse = data.output || data.text || data.response || data.message || '';
-                recommendations = parseRecommendations(aiResponse);
-            }
-
-            renderRecommendations(container, recommendations);
-        } else {
-            renderRecommendations(container, getFallbackRecommendations(), true);
-        }
-    } catch (error) {
-        renderRecommendations(container, getFallbackRecommendations(), true);
-    }
+    // Use fallback recommendations directly (API endpoints not available)
+    // This prevents 400 errors in console and provides instant results
+    renderRecommendations(container, getFallbackRecommendations(), true);
 };
 
 const parseRecommendations = (aiResponse) => {

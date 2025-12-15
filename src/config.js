@@ -9,7 +9,7 @@ export const Config = {
 
     // API Configuration
     api: {
-        baseUrl: 'http://139.59.224.58:5000',
+        baseUrl: '/api',
         timeout: 10000
     },
 

@@ -9,7 +9,7 @@ import { App } from '../../app.js';
 // API Configuration
 // ========================================
 // Always use VPS Backend URL
-const API_BASE_URL = 'http://139.59.224.58:5000';
+const API_BASE_URL = '/api';
 const PLAN_API_URL = `${API_BASE_URL}/ai/plan`;
 const SHIPPING_API_URL = `${API_BASE_URL}/shipping-schedules`;
 

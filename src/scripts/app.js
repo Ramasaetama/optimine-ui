@@ -274,7 +274,7 @@ const Presenter = {
     async handleLogin(email, password) {
         try {
             // Call real API
-            const response = await fetch('http://139.59.224.58:5000/login', {
+            const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -317,7 +317,7 @@ const Presenter = {
     async handleRegister(name, email, password, role) {
         try {
             // Call real API for registration
-            const registerResponse = await fetch('http://139.59.224.58:5000/register', {
+            const registerResponse = await fetch('/api/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -338,7 +338,7 @@ const Presenter = {
             }
 
             // Auto login after successful registration
-            const loginResponse = await fetch('http://139.59.224.58:5000/login', {
+            const loginResponse = await fetch('/api/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

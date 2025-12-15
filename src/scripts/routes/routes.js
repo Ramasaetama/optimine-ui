@@ -11,6 +11,7 @@ import { aiToolsPage } from '../pages/ai-tools/ai-tools-page.js';
 import { planningPage } from '../pages/planning/planning-page.js';
 import { authPage } from '../pages/auth/auth-page.js';
 import { resetPasswordPage } from '../pages/auth/reset-password-page.js';
+import { dashboardPage } from '../pages/dashboard/dashboard-page.js';
 
 // Routes registry
 const routes = {};
@@ -30,7 +31,7 @@ export const Router = {
         this.register('home', homePage);
         this.register('planning', planningPage);
         this.register('ai-tools', aiToolsPage);
-        this.register('dashboard', aboutPage);
+        this.register('dashboard', dashboardPage);
         this.register('auth', authPage);
         this.register('profile', aboutPage);
         this.register('reset-password', resetPasswordPage);

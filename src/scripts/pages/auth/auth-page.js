@@ -6,7 +6,7 @@
 import { App } from '../../app.js';
 import { API } from '../../data/api.js';
 
-const API_BASE_URL = 'http://139.59.224.58:5000';
+const API_BASE_URL = '/api';
 
 /**
  * Auth Page Handler

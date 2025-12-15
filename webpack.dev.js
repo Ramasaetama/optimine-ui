@@ -12,8 +12,9 @@ module.exports = merge(common, {
         historyApiFallback: true,
         client: {
             overlay: {
-                errors: true,
-                warnings: false
+                errors: false,  // Disable to prevent cross-origin error noise
+                warnings: false,
+                runtimeErrors: false  // Explicitly disable runtime errors overlay
             }
         }
     }

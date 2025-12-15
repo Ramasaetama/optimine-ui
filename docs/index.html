@@ -1,4 +1,4 @@
-<!doctype html><html lang="id" class="scroll-smooth dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="OptiMine - Platform optimasi rantai nilai pertambangan untuk meningkatkan efisiensi operasional dan profitabilitas industri tambang dengan AI-powered analysis."><meta name="keywords" content="mining, optimization, value chain, pertambangan, optimasi, rantai nilai, AI, machine learning, analytics"><meta name="author" content="OptiMine Team"><meta name="robots" content="index, follow"><meta property="og:type" content="website"><meta property="og:url" content="https://optimine.app/"><meta property="og:title" content="OptiMine - Mining Value Chain Optimization"><meta property="og:description" content="Platform optimasi rantai nilai pertambangan dengan AI-powered analysis untuk meningkatkan efisiensi operasional."><meta property="og:image" content="assets/images/og-image.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="OptiMine - Mining Value Chain Optimization"><meta name="twitter:description" content="Platform optimasi rantai nilai pertambangan dengan AI-powered analysis."><meta name="twitter:image" content="assets/images/og-image.png"><link rel="icon" type="image/png" sizes="32x32" href="public/favicon.png"><link rel="icon" type="image/png" sizes="16x16" href="public/favicon.png"><link rel="apple-touch-icon" href="public/favicon.png"><title>OptiMine - Mining Value Chain Optimization</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><script>(function() {
+<!doctype html><html lang="id" class="scroll-smooth dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="description" content="OptiMine - Platform optimasi rantai nilai pertambangan untuk meningkatkan efisiensi operasional dan profitabilitas industri tambang dengan AI-powered analysis."><meta name="keywords" content="mining, optimization, value chain, pertambangan, optimasi, rantai nilai, AI, machine learning, analytics"><meta name="author" content="OptiMine Team"><meta name="robots" content="index, follow"><meta property="og:type" content="website"><meta property="og:url" content="https://optimine.app/"><meta property="og:title" content="OptiMine - Mining Value Chain Optimization"><meta property="og:description" content="Platform optimasi rantai nilai pertambangan dengan AI-powered analysis untuk meningkatkan efisiensi operasional."><meta property="og:image" content="assets/images/og-image.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="OptiMine - Mining Value Chain Optimization"><meta name="twitter:description" content="Platform optimasi rantai nilai pertambangan dengan AI-powered analysis."><meta name="twitter:image" content="assets/images/og-image.png"><link rel="icon" type="image/png" sizes="32x32" href="public/favicon.png"><link rel="icon" type="image/png" sizes="16x16" href="public/favicon.png"><link rel="apple-touch-icon" href="public/favicon.png"><title>OptiMine - Mining Value Chain Optimization</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet"><script>(function () {
             const theme = localStorage.getItem('optimine-theme');
             if (theme === 'light') {
                 document.documentElement.classList.remove('dark');
@@ -7,7 +7,7 @@
             } else {
                 document.documentElement.classList.remove('dark');
             }
-        })();</script><script src="https://cdn.tailwindcss.com"></script><script src="https://unpkg.com/lucide@latest"></script><script>tailwind.config = {
+        })();</script><script src="https://cdn.tailwindcss.com"></script><script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="https://unpkg.com/lucide@latest"></script><script>tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
@@ -111,7 +111,7 @@
             --radius: 0.75rem;
             --glow-primary: 199 89% 48%;
         }
-        
+
         /* ===== CSS Variables - Dark Mode ===== */
         .dark {
             --background: 222 47% 5%;
@@ -135,13 +135,14 @@
             --ring: 210 100% 55%;
             --glow-primary: 210 100% 55%;
         }
-        
+
         /* ===== Base Styles ===== */
-        html, body {
+        html,
+        body {
             background-color: hsl(var(--background));
             color: hsl(var(--foreground));
         }
-        
+
         /* ===== Glass Effect ===== */
         .glass {
             background: hsl(var(--card) / 0.7);
@@ -149,33 +150,33 @@
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid hsl(var(--border) / 0.5);
         }
-        
+
         /* ===== Glow Effects ===== */
         .glow-primary {
-            box-shadow: 
+            box-shadow:
                 0 0 20px hsl(var(--glow-primary) / 0.3),
                 0 0 40px hsl(var(--glow-primary) / 0.1);
         }
-        
+
         .glow-hover {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .glow-hover:hover {
             transform: translateY(-4px);
-            box-shadow: 
+            box-shadow:
                 0 10px 30px hsl(var(--glow-primary) / 0.3),
                 0 0 40px hsl(var(--glow-primary) / 0.15);
         }
-        
+
         /* ===== Border Glow ===== */
         .border-glow {
             border: 1px solid hsl(var(--primary) / 0.3);
-            box-shadow: 
+            box-shadow:
                 inset 0 0 20px hsl(var(--primary) / 0.05),
                 0 0 20px hsl(var(--primary) / 0.1);
         }
-        
+
         /* ===== Text Gradient ===== */
         .text-gradient {
             background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(199 89% 60%) 100%);
@@ -183,12 +184,12 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        
+
         /* ===== Radial Gradient ===== */
         .radial-gradient {
             background: radial-gradient(ellipse at top, hsl(var(--primary) / 0.15) 0%, transparent 50%);
         }
-        
+
         /* ===== Navigation Link Styles ===== */
         .nav-link {
             display: flex;
@@ -202,17 +203,19 @@
             transition: all 0.2s ease;
             border: 1px solid transparent;
         }
+
         .nav-link:hover {
             color: hsl(var(--foreground));
             background: hsl(var(--secondary) / 0.5);
         }
+
         .nav-link.active {
             color: hsl(var(--primary));
             background: hsl(var(--primary) / 0.1);
             border-color: hsl(var(--primary) / 0.3);
             box-shadow: 0 0 10px hsl(var(--primary) / 0.2);
         }
-        
+
         .mobile-nav-link {
             display: flex;
             align-items: center;
@@ -223,15 +226,17 @@
             transition: all 0.2s ease;
             border: 1px solid transparent;
         }
+
         .mobile-nav-link:hover {
             background: hsl(var(--secondary) / 0.5);
         }
+
         .mobile-nav-link.active {
             color: hsl(var(--primary));
             background: hsl(var(--primary) / 0.1);
             border-color: hsl(var(--primary) / 0.3);
         }
-        
+
         /* ===== Capability Pills ===== */
         .capability-pill {
             display: flex;
@@ -244,7 +249,7 @@
             border: 1px solid hsl(var(--border));
             border-radius: 9999px;
         }
-        
+
         /* ===== Toast Notifications ===== */
         .toast-container {
             position: fixed;
@@ -255,6 +260,7 @@
             flex-direction: column;
             gap: 0.5rem;
         }
+
         .toast {
             padding: 0.875rem 1.25rem;
             border-radius: 0.75rem;
@@ -266,90 +272,177 @@
             gap: 0.75rem;
             animation: slide-up 0.3s ease;
         }
-        .toast.success { border-left: 3px solid #22c55e; }
-        .toast.error { border-left: 3px solid #ef4444; }
-        .toast.info { border-left: 3px solid hsl(var(--primary)); }
-        
+
+        .toast.success {
+            border-left: 3px solid #22c55e;
+        }
+
+        .toast.error {
+            border-left: 3px solid #ef4444;
+        }
+
+        .toast.info {
+            border-left: 3px solid hsl(var(--primary));
+        }
+
         /* ===== Auth Tab Styles ===== */
         .auth-tab {
             color: hsl(var(--muted-foreground));
             background: transparent;
             transition: all 0.3s ease;
         }
+
         .auth-tab:hover {
             color: hsl(var(--foreground));
         }
+
         .auth-tab.active {
             color: hsl(var(--primary-foreground));
             background: hsl(var(--primary));
             box-shadow: 0 2px 10px hsl(var(--primary) / 0.3);
         }
-        
+
         /* ===== Select Dropdown Styling ===== */
         select option {
             background: hsl(var(--card));
             color: hsl(var(--foreground));
             padding: 0.5rem;
         }
-        
+
         /* ===== SPA Page Transitions ===== */
         #spa-content {
             will-change: opacity, transform;
         }
+
         .page-enter {
             opacity: 0;
             transform: translateY(10px);
         }
+
         .page-enter-active {
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.5s ease-out, transform 0.5s ease-out;
         }
+
         .page-exit {
             opacity: 1;
             transform: translateY(0);
         }
+
         .page-exit-active {
             opacity: 0;
             transform: translateY(-10px);
             transition: opacity 0.2s ease-in, transform 0.2s ease-in;
         }
-        
+
         /* ===== Stagger Animation Delays ===== */
-        .stagger-1 { animation-delay: 0.1s; opacity: 0; }
-        .stagger-2 { animation-delay: 0.2s; opacity: 0; }
-        .stagger-3 { animation-delay: 0.3s; opacity: 0; }
-        .stagger-4 { animation-delay: 0.4s; opacity: 0; }
-        .stagger-5 { animation-delay: 0.5s; opacity: 0; }
-        
+        .stagger-1 {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+
+        .stagger-2 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .stagger-3 {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+
+        .stagger-4 {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+
+        .stagger-5 {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+
         /* ===== Keyframe Animations ===== */
         @keyframes fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes scale-in {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
+
         @keyframes slide-up {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes slide-down {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
+
         @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 10px hsl(var(--primary) / 0.5); }
-            50% { box-shadow: 0 0 25px hsl(var(--primary) / 0.8); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
+            }
+
+            50% {
+                box-shadow: 0 0 25px hsl(var(--primary) / 0.8);
+            }
         }
-        
-        .animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
-        .animate-scale-in { animation: scale-in 0.3s ease-out forwards; }
-        .animate-slide-up { animation: slide-up 0.5s ease-out forwards; }
-        .animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
-        .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
-        
+
+        .animate-fade-in {
+            animation: fade-in 0.5s ease-out forwards;
+        }
+
+        .animate-scale-in {
+            animation: scale-in 0.3s ease-out forwards;
+        }
+
+        .animate-slide-up {
+            animation: slide-up 0.5s ease-out forwards;
+        }
+
+        .animate-slide-down {
+            animation: slide-down 0.3s ease-out forwards;
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
         /* ===== Range Slider Styles ===== */
         .slider-primary {
             -webkit-appearance: none;
@@ -359,6 +452,7 @@
             border-radius: 4px;
             outline: none;
         }
+
         .slider-primary::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
@@ -370,10 +464,12 @@
             box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
             transition: transform 0.2s, box-shadow 0.2s;
         }
+
         .slider-primary::-webkit-slider-thumb:hover {
             transform: scale(1.1);
             box-shadow: 0 0 15px hsl(var(--primary) / 0.7);
         }
+
         .slider-primary::-moz-range-thumb {
             width: 20px;
             height: 20px;
@@ -383,18 +479,32 @@
             border: none;
             box-shadow: 0 0 10px hsl(var(--primary) / 0.5);
         }
+
         .slider-primary::-moz-range-track {
             background: hsl(var(--secondary));
             border-radius: 4px;
             height: 8px;
         }
-        
+
         /* ===== Scrollbar Styles ===== */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: hsl(var(--secondary) / 0.5); }
-        ::-webkit-scrollbar-thumb { background: hsl(var(--muted-foreground) / 0.3); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }</style><link href="styles.css" rel="stylesheet"></head><body class="bg-background text-foreground font-sans antialiased min-h-screen transition-colors duration-300"><div id="app" class="relative flex flex-col min-h-screen"><div class="fixed inset-0 -z-10 overflow-hidden"><div class="radial-gradient absolute inset-0"></div><div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div><div class="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div></div><header id="header" class="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50 transition-all duration-300"><nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-3 group"><img src="assets/images/b (192 x 192 piksel) (1).png" alt="OptiMine Logo" class="w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-105 shadow-lg"> <span class="font-heading font-bold text-xl"><span class="text-gradient">Opti</span><span class="text-foreground">Mine</span></span></a><div class="hidden lg:flex items-center gap-1 bg-secondary/30 rounded-full px-2 py-1"><a href="#home" class="nav-link active" data-page="home"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> <span data-i18n="nav.home">Home</span> </a><a href="#planning" class="nav-link" data-page="planning"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg> <span data-i18n="nav.planning">Planning</span> </a><a href="#ai-tools" class="nav-link" data-page="ai-tools"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> <span data-i18n="nav.aiTools">AI Tools</span> </a><a href="#dashboard" class="nav-link" data-page="dashboard"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> <span data-i18n="nav.dashboard">Dashboard</span></a></div><div class="flex items-center gap-2"><div class="relative"><button id="lang-toggle" onclick="document.getElementById('lang-dropdown').classList.toggle('hidden')" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors flex items-center gap-1" aria-label="Change language"><svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg></button><div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-36 glass border border-border rounded-xl shadow-xl py-2 animate-slide-down z-50"><button class="lang-option w-full px-4 py-2.5 text-left text-sm hover:bg-primary/10 flex items-center gap-3 transition-colors rounded-lg mx-auto" style="width: calc(100% - 8px); margin-left: 4px;" data-lang="en" onclick="window.OptiMine.App.Model.setLanguage('en'); document.getElementById('lang-dropdown').classList.add('hidden'); window.updateLanguageUI('en');"><span class="text-base">🇬🇧</span> <span class="text-foreground font-medium">English</span></button> <button class="lang-option w-full px-4 py-2.5 text-left text-sm hover:bg-primary/10 flex items-center gap-3 transition-colors rounded-lg mx-auto" style="width: calc(100% - 8px); margin-left: 4px;" data-lang="id" onclick="window.OptiMine.App.Model.setLanguage('id'); document.getElementById('lang-dropdown').classList.add('hidden'); window.updateLanguageUI('id');"><span class="text-base">🇮🇩</span> <span class="text-foreground font-medium">Indonesia</span></button></div></div><button id="theme-toggle" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Toggle theme"><svg id="sun-icon" class="w-5 h-5 text-muted-foreground hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg> <svg id="moon-icon" class="w-5 h-5 text-muted-foreground block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button> <a href="#auth" id="loginBtn" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors hidden sm:flex" aria-label="Login"><svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg> </a><a href="#profile" id="profileBtn" class="hidden items-center gap-2 p-1.5 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Profile"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white text-sm font-medium user-initial">U</div><span class="user-name text-sm font-medium hidden sm:block">User</span> </a><button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Toggle menu"><svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg> <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div></div></nav><div id="mobile-menu" class="hidden lg:hidden border-t border-border/50 glass animate-fade-in"><div class="max-w-7xl mx-auto px-4 py-4 space-y-1"><a href="#home" class="mobile-nav-link active" data-page="home"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> <span data-i18n="nav.home">Home</span> </a><a href="#planning" class="mobile-nav-link" data-page="planning"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg> <span data-i18n="nav.planning">Planning</span> </a><a href="#ai-tools" class="mobile-nav-link" data-page="ai-tools"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> <span data-i18n="nav.aiTools">AI Tools</span> </a><a href="#dashboard" class="mobile-nav-link" data-page="dashboard"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> <span data-i18n="nav.dashboard">Dashboard</span></a><div class="border-t border-border/50 pt-4 mt-4 flex items-center justify-between"><div class="flex items-center gap-2"><button class="lang-option-mobile px-3 py-1.5 text-sm rounded-md hover:bg-secondary/50 transition-colors" data-lang="en">🇬🇧 EN</button> <button class="lang-option-mobile px-3 py-1.5 text-sm rounded-md hover:bg-secondary/50 transition-colors" data-lang="id">🇮🇩 ID</button></div><a href="#auth" id="mobileLoginBtn" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg> <span data-i18n="nav.login">Login</span> </a><a href="#profile" id="mobileProfileBtn" class="hidden items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> <span class="user-name" data-i18n="nav.profile">Profile</span></a></div></div></div></header><main id="spa-content" class="pt-16 flex-1"></main><footer class="border-t border-border py-8 mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-col md:flex-row justify-between items-center gap-4"><div class="flex items-center gap-2"><img src="assets/images/b (192 x 192 piksel) (1).png" alt="OptiMine Logo" class="w-8 h-8 rounded-full object-cover"> <span class="font-heading font-bold"><span class="text-gradient">Opti</span>Mine</span></div><p class="text-sm text-muted-foreground" data-i18n="common.copyright">© 2025 OptiMine. All rights reserved.</p><div class="flex gap-4 text-sm"><a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.privacy">Privacy</a> <a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.terms">Terms</a> <a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.contact">Contact</a></div></div></div></footer></div><div id="toast-container" class="toast-container"></div><script>// Initialize Lucide icons when DOM is ready
-        document.addEventListener('DOMContentLoaded', function() {
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: hsl(var(--secondary) / 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: hsl(var(--muted-foreground) / 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: hsl(var(--muted-foreground) / 0.5);
+        }</style><link href="styles.css" rel="stylesheet"></head><body class="bg-background text-foreground font-sans antialiased min-h-screen transition-colors duration-300"><div id="app" class="relative flex flex-col min-h-screen"><div class="fixed inset-0 -z-10 overflow-hidden"><div class="radial-gradient absolute inset-0"></div><div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl"></div><div class="absolute bottom-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div></div><header id="header" class="fixed top-0 left-0 right-0 z-50 glass border-b border-border/50 transition-all duration-300"><nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center justify-between h-16"><a href="#home" class="flex items-center gap-3 group"><img src="assets/images/b (192 x 192 piksel) (1).png" alt="OptiMine Logo" class="w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-105 shadow-lg"> <span class="font-heading font-bold text-xl"><span class="text-gradient">Opti</span><span class="text-foreground">Mine</span></span></a><div class="hidden lg:flex items-center gap-1 bg-secondary/30 rounded-full px-2 py-1"><a href="#home" class="nav-link active" data-page="home"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> <span data-i18n="nav.home">Home</span> </a><a href="#planning" class="nav-link" data-page="planning"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg> <span data-i18n="nav.planning">Planning</span> </a><a href="#ai-tools" class="nav-link" data-page="ai-tools"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> <span data-i18n="nav.aiTools">AI Tools</span> </a><a href="#dashboard" class="nav-link" data-page="dashboard"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> <span data-i18n="nav.dashboard">Dashboard</span></a></div><div class="flex items-center gap-2"><div class="relative"><button id="lang-toggle" onclick="document.getElementById('lang-dropdown').classList.toggle('hidden')" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors flex items-center gap-1" aria-label="Change language"><svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg></button><div id="lang-dropdown" class="hidden absolute right-0 mt-2 w-36 glass border border-border rounded-xl shadow-xl py-2 animate-slide-down z-50"><button class="lang-option w-full px-4 py-2.5 text-left text-sm hover:bg-primary/10 flex items-center gap-3 transition-colors rounded-lg mx-auto" style="width: calc(100% - 8px); margin-left: 4px;" data-lang="en" onclick="window.OptiMine.App.Model.setLanguage('en'); document.getElementById('lang-dropdown').classList.add('hidden'); window.updateLanguageUI('en');"><span class="text-base">🇬🇧</span> <span class="text-foreground font-medium">English</span></button> <button class="lang-option w-full px-4 py-2.5 text-left text-sm hover:bg-primary/10 flex items-center gap-3 transition-colors rounded-lg mx-auto" style="width: calc(100% - 8px); margin-left: 4px;" data-lang="id" onclick="window.OptiMine.App.Model.setLanguage('id'); document.getElementById('lang-dropdown').classList.add('hidden'); window.updateLanguageUI('id');"><span class="text-base">🇮🇩</span> <span class="text-foreground font-medium">Indonesia</span></button></div></div><button id="theme-toggle" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Toggle theme"><svg id="sun-icon" class="w-5 h-5 text-muted-foreground hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg> <svg id="moon-icon" class="w-5 h-5 text-muted-foreground block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg></button> <a href="#auth" id="loginBtn" class="p-2 rounded-lg hover:bg-secondary/50 transition-colors hidden sm:flex" aria-label="Login"><svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg> </a><a href="#profile" id="profileBtn" class="hidden items-center gap-2 p-1.5 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Profile"><div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white text-sm font-medium user-initial">U</div><span class="user-name text-sm font-medium hidden sm:block">User</span> </a><button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-secondary/50 transition-colors" aria-label="Toggle menu"><svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg> <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button></div></div></nav><div id="mobile-menu" class="hidden lg:hidden border-t border-border/50 glass animate-fade-in"><div class="max-w-7xl mx-auto px-4 py-4 space-y-1"><a href="#home" class="mobile-nav-link active" data-page="home"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg> <span data-i18n="nav.home">Home</span> </a><a href="#planning" class="mobile-nav-link" data-page="planning"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg> <span data-i18n="nav.planning">Planning</span> </a><a href="#ai-tools" class="mobile-nav-link" data-page="ai-tools"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg> <span data-i18n="nav.aiTools">AI Tools</span> </a><a href="#dashboard" class="mobile-nav-link" data-page="dashboard"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg> <span data-i18n="nav.dashboard">Dashboard</span></a><div class="border-t border-border/50 pt-4 mt-4 flex items-center justify-between"><div class="flex items-center gap-2"><button class="lang-option-mobile px-3 py-1.5 text-sm rounded-md hover:bg-secondary/50 transition-colors" data-lang="en">🇬🇧 EN</button> <button class="lang-option-mobile px-3 py-1.5 text-sm rounded-md hover:bg-secondary/50 transition-colors" data-lang="id">🇮🇩 ID</button></div><a href="#auth" id="mobileLoginBtn" class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"/></svg> <span data-i18n="nav.login">Login</span> </a><a href="#profile" id="mobileProfileBtn" class="hidden items-center gap-2 px-4 py-2 text-sm font-medium text-primary hover:bg-primary/10 rounded-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg> <span class="user-name" data-i18n="nav.profile">Profile</span></a></div></div></div></header><main id="spa-content" class="pt-16 flex-1"></main><footer class="border-t border-border py-8 mt-auto"><div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex flex-col md:flex-row justify-between items-center gap-4"><div class="flex items-center gap-2"><img src="assets/images/b (192 x 192 piksel) (1).png" alt="OptiMine Logo" class="w-8 h-8 rounded-full object-cover"> <span class="font-heading font-bold"><span class="text-gradient">Opti</span>Mine</span></div><p class="text-sm text-muted-foreground" data-i18n="common.copyright">© 2025 OptiMine. All rights reserved.</p><div class="flex gap-4 text-sm"><a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.privacy">Privacy</a> <a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.terms">Terms</a> <a href="#" class="text-muted-foreground hover:text-foreground transition-colors" data-i18n="common.contact">Contact</a></div></div></div></footer></div><div id="toast-container" class="toast-container"></div><script>// Initialize Lucide icons when DOM is ready
+        document.addEventListener('DOMContentLoaded', function () {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }

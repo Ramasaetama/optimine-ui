@@ -8,21 +8,21 @@
 // ========================================
 const ThemeManager = {
     STORAGE_KEY: 'optimine-theme',
-    
+
     init() {
         // Check for saved theme preference or system preference
         const savedTheme = localStorage.getItem(this.STORAGE_KEY);
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
+
         if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
         }
-        
+
         // Setup toggle button
         this.setupToggle();
-        
+
         // Listen for system theme changes
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
             if (!localStorage.getItem(this.STORAGE_KEY)) {
@@ -34,26 +34,26 @@ const ThemeManager = {
             }
         });
     },
-    
+
     setupToggle() {
         const toggleBtn = document.getElementById('theme-toggle');
         if (!toggleBtn) return;
-        
+
         toggleBtn.addEventListener('click', () => {
             const isDark = document.documentElement.classList.toggle('dark');
             localStorage.setItem(this.STORAGE_KEY, isDark ? 'dark' : 'light');
-            
+
             // Dispatch custom event for other components
-            window.dispatchEvent(new CustomEvent('themechange', { 
-                detail: { theme: isDark ? 'dark' : 'light' } 
+            window.dispatchEvent(new CustomEvent('themechange', {
+                detail: { theme: isDark ? 'dark' : 'light' }
             }));
         });
     },
-    
+
     isDark() {
         return document.documentElement.classList.contains('dark');
     },
-    
+
     setTheme(theme) {
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
@@ -70,7 +70,7 @@ const ThemeManager = {
 const LanguageManager = {
     STORAGE_KEY: 'optimine-lang',
     currentLang: 'en',
-    
+
     // Translation dictionary
     translations: {
         en: {
@@ -80,7 +80,7 @@ const LanguageManager = {
             'nav.aiTools': 'AI Tools',
             'nav.dashboard': 'Dashboard',
             'nav.login': 'Login',
-            
+
             // Home Page
             'home.welcome': 'Welcome to',
             'home.subtitle': 'AI-powered Mining Value Chain Optimization Platform',
@@ -95,7 +95,7 @@ const LanguageManager = {
             'home.operationsDashboard': 'Operations Dashboard',
             'home.operationsDesc': 'Real-time monitoring and analytics',
             'home.capabilities': 'Our Capabilities',
-            
+
             // Planning Page
             'planning.title': 'AI Scenario Simulator',
             'planning.subtitle': 'Configure parameters to generate optimized production plans',
@@ -114,7 +114,7 @@ const LanguageManager = {
             'planning.dataSync': 'Data Sync',
             'planning.ready': 'Ready',
             'planning.activeAlerts': 'Active Alerts',
-            
+
             // AI Tools Page
             'aiTools.title': 'AI Assistant',
             'aiTools.subtitle': 'Ask questions about field conditions and get AI recommendations',
@@ -128,13 +128,13 @@ const LanguageManager = {
             'aiTools.integration': 'Integration',
             'aiTools.integrationDesc': 'Ready for n8n workflow integration and Lovable AI connection',
             'aiTools.welcomeMessage': "Hello! I'm your AI Mining Operations Assistant. How can I help you optimize your operations today?",
-            
+
             // AI Responses
             'ai.weatherAnalysis': 'Weather Impact Analysis',
             'ai.fleetOptimization': 'Fleet Optimization',
             'ai.shippingCoordination': 'Shipping Coordination',
             'ai.productionPlanning': 'Production Planning',
-            
+
             // Auth Page
             'auth.subtitle': 'Mining Value Chain Optimization Platform',
             'auth.login': 'Login',
@@ -166,7 +166,11 @@ const LanguageManager = {
             'auth.registerError': 'Registration failed. Please try again.',
             'auth.resetEmailSent': 'Password reset link has been sent to your email.',
             'auth.resetError': 'Failed to send reset link. Please try again.',
-            
+            'auth.passwordRequirements': 'Password Requirements:',
+            'auth.minLength': 'Minimum 8 characters',
+            'auth.uppercase': 'Uppercase letter (A-Z)',
+            'auth.number': 'Number (0-9)',
+
             // Profile Page
             'profile.title': 'Profile Settings',
             'profile.editProfile': 'Edit Profile',
@@ -186,7 +190,7 @@ const LanguageManager = {
             'profile.notificationsEnabled': 'Notifications enabled',
             'profile.notificationsDisabled': 'Notifications disabled',
             'profile.loggedOut': 'Logged out successfully',
-            
+
             // AI Recommendations
             'profile.aiRecommendations': 'AI Recommendations',
             'profile.justification': 'Justification:',
@@ -199,7 +203,7 @@ const LanguageManager = {
             'profile.rec3Title': 'Schedule Maintenance',
             'profile.rec3Desc': 'Excavator EX-07 approaching 500hr service interval.',
             'profile.rec3Just': 'Preventive maintenance will avoid 15% productivity loss.',
-            
+
             // Dashboard Page
             'dashboard.title': 'Operations Dashboard',
             'dashboard.subtitle': 'Real-time monitoring and analytics',
@@ -237,7 +241,7 @@ const LanguageManager = {
             'nav.aiTools': 'Alat AI',
             'nav.dashboard': 'Dasbor',
             'nav.login': 'Masuk',
-            
+
             // Home Page
             'home.welcome': 'Selamat Datang di',
             'home.subtitle': 'Platform Optimisasi Rantai Nilai Pertambangan Berbasis AI',
@@ -252,7 +256,7 @@ const LanguageManager = {
             'home.operationsDashboard': 'Dasbor Operasi',
             'home.operationsDesc': 'Pemantauan dan analitik real-time',
             'home.capabilities': 'Kemampuan Kami',
-            
+
             // Planning Page
             'planning.title': 'Simulator Skenario AI',
             'planning.subtitle': 'Konfigurasi parameter untuk menghasilkan rencana produksi optimal',
@@ -271,7 +275,7 @@ const LanguageManager = {
             'planning.dataSync': 'Sinkronisasi Data',
             'planning.ready': 'Siap',
             'planning.activeAlerts': 'Peringatan Aktif',
-            
+
             // AI Tools Page
             'aiTools.title': 'Asisten AI',
             'aiTools.subtitle': 'Ajukan pertanyaan tentang kondisi lapangan dan dapatkan rekomendasi AI',
@@ -285,13 +289,13 @@ const LanguageManager = {
             'aiTools.integration': 'Integrasi',
             'aiTools.integrationDesc': 'Siap untuk integrasi workflow n8n dan koneksi Lovable AI',
             'aiTools.welcomeMessage': 'Halo! Saya Asisten AI Operasi Pertambangan Anda. Bagaimana saya bisa membantu mengoptimalkan operasi Anda hari ini?',
-            
+
             // AI Responses
             'ai.weatherAnalysis': 'Analisis Dampak Cuaca',
             'ai.fleetOptimization': 'Optimasi Armada',
             'ai.shippingCoordination': 'Koordinasi Pengiriman',
             'ai.productionPlanning': 'Perencanaan Produksi',
-            
+
             // Auth Page
             'auth.subtitle': 'Platform Optimisasi Rantai Nilai Pertambangan',
             'auth.login': 'Masuk',
@@ -323,8 +327,11 @@ const LanguageManager = {
             'auth.registerError': 'Pendaftaran gagal. Silakan coba lagi.',
             'auth.resetEmailSent': 'Tautan reset kata sandi telah dikirim ke email Anda.',
             'auth.resetError': 'Gagal mengirim tautan reset. Silakan coba lagi.',
-            
-            // Profile Page
+            'auth.passwordRequirements': 'Persyaratan Password:',
+            'auth.minLength': 'Minimal 8 karakter',
+            'auth.uppercase': 'Huruf kapital (A-Z)',
+            'auth.number': 'Angka (0-9)',
+
             'profile.title': 'Pengaturan Profil',
             'profile.editProfile': 'Edit Profil',
             'profile.fullName': 'Nama Lengkap',
@@ -343,7 +350,7 @@ const LanguageManager = {
             'profile.notificationsEnabled': 'Notifikasi diaktifkan',
             'profile.notificationsDisabled': 'Notifikasi dinonaktifkan',
             'profile.loggedOut': 'Berhasil keluar',
-            
+
             // AI Recommendations
             'profile.aiRecommendations': 'Rekomendasi AI',
             'profile.justification': 'Justifikasi:',
@@ -356,7 +363,7 @@ const LanguageManager = {
             'profile.rec3Title': 'Jadwalkan Pemeliharaan',
             'profile.rec3Desc': 'Excavator EX-07 mendekati interval servis 500 jam.',
             'profile.rec3Just': 'Pemeliharaan preventif akan menghindari kehilangan produktivitas 15%.',
-            
+
             // Dashboard Page
             'dashboard.title': 'Dasbor Operasi',
             'dashboard.subtitle': 'Pemantauan dan analitik real-time',
@@ -388,7 +395,7 @@ const LanguageManager = {
             'dashboard.rec3Just': ' Analisis prediktif menunjukkan jendela pemeliharaan optimal besok selama periode aktivitas rendah.',
         }
     },
-    
+
     init() {
         // Get saved language or default to 'en'
         this.currentLang = localStorage.getItem(this.STORAGE_KEY) || 'en';
@@ -397,26 +404,26 @@ const LanguageManager = {
         // Apply translations on init
         this.applyTranslations();
     },
-    
+
     setupDropdown() {
         const langToggle = document.getElementById('lang-toggle');
         const langDropdown = document.getElementById('lang-dropdown');
-        
+
         if (!langToggle || !langDropdown) return;
-        
+
         // Toggle dropdown
         langToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             langDropdown.classList.toggle('hidden');
         });
-        
+
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             if (!langToggle.contains(e.target) && !langDropdown.contains(e.target)) {
                 langDropdown.classList.add('hidden');
             }
         });
-        
+
         // Language options
         const langOptions = langDropdown.querySelectorAll('.lang-option');
         langOptions.forEach(option => {
@@ -427,46 +434,46 @@ const LanguageManager = {
             });
         });
     },
-    
+
     setupMobileLanguage() {
         const mobileOptions = document.querySelectorAll('.lang-option-mobile');
         mobileOptions.forEach(option => {
             option.addEventListener('click', () => {
                 const lang = option.dataset.lang;
                 this.setLanguage(lang);
-                
+
                 // Update active state
                 mobileOptions.forEach(opt => opt.classList.remove('bg-primary/10', 'text-primary'));
                 option.classList.add('bg-primary/10', 'text-primary');
             });
         });
     },
-    
+
     setLanguage(lang) {
         this.currentLang = lang;
         localStorage.setItem(this.STORAGE_KEY, lang);
-        
+
         // Apply translations
         this.applyTranslations();
-        
+
         // Dispatch event for translation updates
-        window.dispatchEvent(new CustomEvent('languagechange', { 
-            detail: { language: lang } 
+        window.dispatchEvent(new CustomEvent('languagechange', {
+            detail: { language: lang }
         }));
-        
+
         console.log(`Language changed to: ${lang}`);
     },
-    
+
     getLanguage() {
         return this.currentLang;
     },
-    
+
     // Get translation by key
     t(key) {
         const translations = this.translations[this.currentLang] || this.translations['en'];
         return translations[key] || key;
     },
-    
+
     // Apply translations to all elements with data-translate attribute
     applyTranslations() {
         const elements = document.querySelectorAll('[data-translate]');
@@ -475,7 +482,7 @@ const LanguageManager = {
             const translation = this.t(key);
             el.textContent = translation;
         });
-        
+
         // Also update placeholders with data-translate-placeholder
         const placeholders = document.querySelectorAll('[data-translate-placeholder]');
         placeholders.forEach(el => {
@@ -490,18 +497,18 @@ const LanguageManager = {
 // ========================================
 const MobileNav = {
     isOpen: false,
-    
+
     init() {
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
         const closeIcon = document.getElementById('close-icon');
-        
+
         if (!menuBtn || !mobileMenu) return;
-        
+
         menuBtn.addEventListener('click', () => {
             this.isOpen = !this.isOpen;
-            
+
             if (this.isOpen) {
                 mobileMenu.classList.remove('hidden');
                 menuIcon?.classList.add('hidden');
@@ -511,10 +518,10 @@ const MobileNav = {
                 menuIcon?.classList.remove('hidden');
                 closeIcon?.classList.add('hidden');
             }
-            
+
             menuBtn.setAttribute('aria-expanded', this.isOpen);
         });
-        
+
         // Close menu when clicking on links
         const menuLinks = mobileMenu.querySelectorAll('a');
         menuLinks.forEach(link => {
@@ -522,7 +529,7 @@ const MobileNav = {
                 this.close();
             });
         });
-        
+
         // Close menu when resizing to desktop
         window.addEventListener('resize', () => {
             if (window.innerWidth >= 1024) { // lg breakpoint
@@ -530,13 +537,13 @@ const MobileNav = {
             }
         });
     },
-    
+
     close() {
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
         const menuIcon = document.getElementById('menu-icon');
         const closeIcon = document.getElementById('close-icon');
-        
+
         this.isOpen = false;
         mobileMenu?.classList.add('hidden');
         menuIcon?.classList.remove('hidden');
@@ -552,15 +559,15 @@ const Navigation = {
     init() {
         this.setActiveLink();
     },
-    
+
     setActiveLink() {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-        
+
         navLinks.forEach(link => {
             const href = link.getAttribute('href');
             link.classList.remove('active');
-            
+
             // Check if current path matches link href
             if (href === '/' && (currentPath === '/' || currentPath === '/index.html' || currentPath.endsWith('/optimine-ui/') || currentPath.endsWith('/optimine-ui/index.html'))) {
                 link.classList.add('active');
@@ -580,24 +587,24 @@ const ScrollEffects = {
         this.setupScrollAnimations();
         this.setupSmoothScroll();
     },
-    
+
     setupHeaderScroll() {
         const header = document.getElementById('header');
         if (!header) return;
-        
+
         let lastScrollY = window.scrollY;
         let ticking = false;
-        
+
         const updateHeader = () => {
             const currentScrollY = window.scrollY;
-            
+
             // Add/remove shadow based on scroll position
             if (currentScrollY > 10) {
                 header.classList.add('shadow-lg');
             } else {
                 header.classList.remove('shadow-lg');
             }
-            
+
             // Hide/show header based on scroll direction (optional)
             // Uncomment below for hide-on-scroll behavior
             /*
@@ -607,11 +614,11 @@ const ScrollEffects = {
                 header.style.transform = 'translateY(0)';
             }
             */
-            
+
             lastScrollY = currentScrollY;
             ticking = false;
         };
-        
+
         window.addEventListener('scroll', () => {
             if (!ticking) {
                 window.requestAnimationFrame(updateHeader);
@@ -619,13 +626,13 @@ const ScrollEffects = {
             }
         }, { passive: true });
     },
-    
+
     setupScrollAnimations() {
         // Intersection Observer for scroll animations
         const animatedElements = document.querySelectorAll('[data-animate]');
-        
+
         if (animatedElements.length === 0) return;
-        
+
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -638,24 +645,24 @@ const ScrollEffects = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
         });
-        
+
         animatedElements.forEach(el => observer.observe(el));
     },
-    
+
     setupSmoothScroll() {
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
+
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     e.preventDefault();
                     const headerOffset = 80;
                     const elementPosition = targetElement.getBoundingClientRect().top;
                     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                    
+
                     window.scrollTo({
                         top: offsetPosition,
                         behavior: 'smooth'
@@ -682,11 +689,11 @@ const Utils = {
             timeout = setTimeout(later, wait);
         };
     },
-    
+
     // Throttle function
     throttle(func, limit) {
         let inThrottle;
-        return function(...args) {
+        return function (...args) {
             if (!inThrottle) {
                 func.apply(this, args);
                 inThrottle = true;
@@ -694,12 +701,12 @@ const Utils = {
             }
         };
     },
-    
+
     // Format number with thousands separator
     formatNumber(num) {
         return new Intl.NumberFormat('id-ID').format(num);
     },
-    
+
     // Format currency
     formatCurrency(num, currency = 'IDR') {
         return new Intl.NumberFormat('id-ID', {
@@ -707,12 +714,12 @@ const Utils = {
             currency: currency
         }).format(num);
     },
-    
+
     // Generate unique ID
     generateId() {
         return Date.now().toString(36) + Math.random().toString(36).substr(2);
     },
-    
+
     // Check if element is in viewport
     isInViewport(element) {
         const rect = element.getBoundingClientRect();
@@ -723,7 +730,7 @@ const Utils = {
             rect.right <= (window.innerWidth || document.documentElement.clientWidth)
         );
     },
-    
+
     // Copy to clipboard
     async copyToClipboard(text) {
         try {
@@ -741,7 +748,7 @@ const Utils = {
 // ========================================
 const Toast = {
     container: null,
-    
+
     init() {
         // Create toast container if it doesn't exist
         if (!this.container) {
@@ -751,17 +758,17 @@ const Toast = {
             document.body.appendChild(this.container);
         }
     },
-    
+
     show(message, type = 'info', duration = 3000) {
         this.init();
-        
+
         const toast = document.createElement('div');
         toast.className = `
             glass border border-border rounded-lg px-4 py-3 shadow-lg
             transform translate-x-full opacity-0 transition-all duration-300
             flex items-center gap-3 max-w-sm
         `;
-        
+
         // Icon based on type
         const icons = {
             success: '<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>',
@@ -769,38 +776,38 @@ const Toast = {
             warning: '<svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>',
             info: '<svg class="w-5 h-5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
         };
-        
+
         toast.innerHTML = `
             ${icons[type] || icons.info}
             <span class="text-sm">${message}</span>
         `;
-        
+
         this.container.appendChild(toast);
-        
+
         // Trigger animation
         requestAnimationFrame(() => {
             toast.classList.remove('translate-x-full', 'opacity-0');
         });
-        
+
         // Auto remove
         setTimeout(() => {
             toast.classList.add('translate-x-full', 'opacity-0');
             setTimeout(() => toast.remove(), 300);
         }, duration);
     },
-    
+
     success(message, duration) {
         this.show(message, 'success', duration);
     },
-    
+
     error(message, duration) {
         this.show(message, 'error', duration);
     },
-    
+
     warning(message, duration) {
         this.show(message, 'warning', duration);
     },
-    
+
     info(message, duration) {
         this.show(message, 'info', duration);
     }
@@ -815,24 +822,24 @@ const FormValidation = {
         phone: /^(\+62|62|0)8[1-9][0-9]{6,9}$/,
         password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/
     },
-    
+
     validate(value, type) {
         if (!this.patterns[type]) return true;
         return this.patterns[type].test(value);
     },
-    
+
     validateEmail(email) {
         return this.patterns.email.test(email);
     },
-    
+
     validatePhone(phone) {
         return this.patterns.phone.test(phone);
     },
-    
+
     validatePassword(password) {
         return this.patterns.password.test(password);
     },
-    
+
     getPasswordStrength(password) {
         let strength = 0;
         if (password.length >= 8) strength++;
@@ -840,7 +847,7 @@ const FormValidation = {
         if (/[A-Z]/.test(password)) strength++;
         if (/\d/.test(password)) strength++;
         if (/[^a-zA-Z\d]/.test(password)) strength++;
-        
+
         const levels = ['Very Weak', 'Weak', 'Fair', 'Strong', 'Very Strong'];
         return {
             score: strength,
@@ -854,7 +861,7 @@ const FormValidation = {
 // ========================================
 const API = {
     baseURL: '/api',
-    
+
     async request(endpoint, options = {}) {
         const url = `${this.baseURL}${endpoint}`;
         const config = {
@@ -864,46 +871,46 @@ const API = {
             },
             ...options
         };
-        
+
         // Add auth token if exists
         const token = localStorage.getItem('optimine-token');
         if (token) {
             config.headers['Authorization'] = `Bearer ${token}`;
         }
-        
+
         try {
             const response = await fetch(url, config);
             const data = await response.json();
-            
+
             if (!response.ok) {
                 throw new Error(data.message || 'Request failed');
             }
-            
+
             return data;
         } catch (error) {
             console.error('API Error:', error);
             throw error;
         }
     },
-    
+
     get(endpoint) {
         return this.request(endpoint, { method: 'GET' });
     },
-    
+
     post(endpoint, data) {
         return this.request(endpoint, {
             method: 'POST',
             body: JSON.stringify(data)
         });
     },
-    
+
     put(endpoint, data) {
         return this.request(endpoint, {
             method: 'PUT',
             body: JSON.stringify(data)
         });
     },
-    
+
     delete(endpoint) {
         return this.request(endpoint, { method: 'DELETE' });
     }
@@ -920,11 +927,11 @@ const App = {
         MobileNav.init();
         Navigation.init();
         ScrollEffects.init();
-        
+
         // Log initialization
         console.log('%c OptiMine ', 'background: #0891b2; color: white; font-size: 16px; padding: 4px 8px; border-radius: 4px;');
         console.log('Mining Value Chain Optimization Platform');
-        
+
         // Dispatch ready event
         window.dispatchEvent(new CustomEvent('optimine:ready'));
     }

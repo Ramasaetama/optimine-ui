@@ -70,6 +70,7 @@ const AuthPage = (() => {
         setupRoleDropdown();
         setupPasswordToggles();
         setupForgotPassword();
+        setupPasswordStrength();
 
         // Check URL for initial tab
         checkUrlParams();
@@ -519,6 +520,157 @@ const AuthPage = (() => {
                 }
             });
         }
+    };
+
+    // ========================================
+    // PASSWORD STRENGTH INDICATOR
+    // ========================================
+
+    const setupPasswordStrength = () => {
+        const registerPassword = document.getElementById('register-password');
+        const passwordInfoContainer = document.getElementById('password-info-container');
+        const strengthContainer = document.getElementById('password-strength-container');
+        const strengthText = document.getElementById('password-strength-text');
+        const strengthBars = [
+            document.getElementById('strength-bar-1'),
+            document.getElementById('strength-bar-2'),
+            document.getElementById('strength-bar-3'),
+            document.getElementById('strength-bar-4')
+        ];
+        const reqLength = document.getElementById('req-length');
+        const reqUppercase = document.getElementById('req-uppercase');
+        const reqNumber = document.getElementById('req-number');
+
+        if (!registerPassword || !passwordInfoContainer) return;
+
+        // Get translations
+        const getStrengthLabel = (strength) => {
+            const lang = localStorage.getItem('optimine-language') || 'id';
+            const labels = {
+                en: ['', 'Weak', 'Fair', 'Good', 'Strong'],
+                id: ['', 'Lemah', 'Cukup', 'Baik', 'Kuat']
+            };
+            return (labels[lang] || labels['id'])[strength] || '';
+        };
+
+        // Check password strength
+        const checkPasswordStrength = (password) => {
+            let strength = 0;
+            const checks = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                number: /[0-9]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                special: /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            };
+
+            // Calculate strength
+            if (checks.length) strength++;
+            if (checks.uppercase) strength++;
+            if (checks.number) strength++;
+            if (checks.special || (checks.lowercase && password.length >= 10)) strength++;
+
+            return { strength, checks };
+        };
+
+        // Update requirement indicator
+        const updateRequirement = (element, isValid) => {
+            if (!element) return;
+            const span = element.querySelector('span');
+            const text = span ? span.textContent : '';
+
+            if (isValid) {
+                element.classList.remove('text-muted-foreground');
+                element.classList.add('text-green-500');
+                element.innerHTML = `
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span>${text}</span>
+                `;
+            } else {
+                element.classList.add('text-muted-foreground');
+                element.classList.remove('text-green-500');
+                element.innerHTML = `
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10" stroke-width="2"/>
+                    </svg>
+                    <span>${text}</span>
+                `;
+            }
+        };
+
+        // Update strength UI
+        const updateStrengthUI = (strength) => {
+            const colors = {
+                0: { bar: 'bg-secondary', text: '', color: '' },
+                1: { bar: 'bg-red-500', text: 'text-red-500', color: getStrengthLabel(1) },
+                2: { bar: 'bg-orange-500', text: 'text-orange-500', color: getStrengthLabel(2) },
+                3: { bar: 'bg-yellow-500', text: 'text-yellow-500', color: getStrengthLabel(3) },
+                4: { bar: 'bg-green-500', text: 'text-green-500', color: getStrengthLabel(4) }
+            };
+
+            const config = colors[strength];
+
+            // Update bars
+            strengthBars.forEach((bar, index) => {
+                if (!bar) return;
+                bar.className = 'h-1.5 flex-1 rounded-full transition-colors duration-300';
+                if (index < strength) {
+                    bar.classList.add(config.bar);
+                } else {
+                    bar.classList.add('bg-secondary');
+                }
+            });
+
+            // Update text
+            if (strengthText) {
+                strengthText.textContent = config.color;
+                strengthText.className = `text-xs font-medium ${config.text}`;
+            }
+        };
+
+        // Show password info on focus
+        registerPassword.addEventListener('focus', () => {
+            passwordInfoContainer.classList.remove('hidden');
+        });
+
+        // Hide password info on blur (only if empty)
+        registerPassword.addEventListener('blur', () => {
+            if (!registerPassword.value) {
+                passwordInfoContainer.classList.add('hidden');
+                strengthContainer?.classList.add('hidden');
+            }
+        });
+
+        // Input handler
+        registerPassword.addEventListener('input', (e) => {
+            const password = e.target.value;
+
+            // Always show container when typing
+            passwordInfoContainer.classList.remove('hidden');
+
+            if (password.length > 0) {
+                strengthContainer?.classList.remove('hidden');
+                const { strength, checks } = checkPasswordStrength(password);
+
+                // Update requirements
+                updateRequirement(reqLength, checks.length);
+                updateRequirement(reqUppercase, checks.uppercase);
+                updateRequirement(reqNumber, checks.number);
+
+                // Update strength bar
+                updateStrengthUI(strength);
+            } else {
+                strengthContainer?.classList.add('hidden');
+                updateStrengthUI(0);
+
+                // Reset requirements
+                updateRequirement(reqLength, false);
+                updateRequirement(reqUppercase, false);
+                updateRequirement(reqNumber, false);
+            }
+        });
     };
 
     // ========================================

@@ -6,12 +6,13 @@
 import { App } from '../../app.js';
 import { Router } from '../../routes/routes.js';
 import { getSection } from '../../utils/translations.js';
+import { API } from '../../data/api.js';
 
 const templates = {
     planning: () => {
         const lang = App.Model.getState('language') || 'id';
         const p = getSection(lang, 'planning');
-        
+
         return `
     <div class="min-h-[calc(100vh-4rem)] pt-6 relative">
         <!-- Background Effects -->
@@ -205,7 +206,7 @@ const templates = {
     'ai-tools': () => {
         const lang = App.Model.getState('language') || 'id';
         const ai = getSection(lang, 'aiTools');
-        
+
         return `
     <div class="h-[calc(100vh-4rem)] pt-6">
         <div class="h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -323,7 +324,7 @@ const templates = {
     dashboard: () => {
         const lang = App.Model.getState('language') || 'id';
         const d = getSection(lang, 'dashboard');
-        
+
         return `
     <div class="min-h-screen pt-6 pb-8 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
@@ -403,7 +404,7 @@ const templates = {
     auth: () => {
         const lang = localStorage.getItem('optimine-language') || 'id';
         const a = getSection(lang, 'auth');
-        
+
         return `
     <div class="min-h-screen flex items-center justify-center px-4 pt-6 pb-8">
         <div class="w-full max-w-md">
@@ -696,7 +697,7 @@ const templates = {
         const theme = localStorage.getItem('optimine-theme') || 'dark';
         const lang = localStorage.getItem('optimine-language') || 'id';
         const pr = getSection(lang, 'profile');
-        
+
         return `
         <div class="min-h-screen pt-6 pb-8 px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl mx-auto">
@@ -783,7 +784,7 @@ const setupAuthHandlers = () => {
     const forgotPasswordBtn = document.getElementById('forgot-password-btn');
     const backToLoginBtn = document.getElementById('back-to-login-btn');
     const forgotPasswordForm = document.getElementById('forgot-password-form');
-    
+
     // Clone forms to remove all previous event listeners (prevent duplicate handlers)
     if (loginForm) {
         const loginFormClone = loginForm.cloneNode(true);
@@ -795,7 +796,7 @@ const setupAuthHandlers = () => {
         registerForm.replaceWith(registerFormClone);
         registerForm = registerFormClone;
     }
-    
+
     // Tab switching - Login
     loginTab?.addEventListener('click', () => {
         loginTab.classList.add('active');
@@ -803,7 +804,7 @@ const setupAuthHandlers = () => {
         loginForm?.classList.remove('hidden');
         registerForm?.classList.add('hidden');
     });
-    
+
     // Tab switching - Register
     registerTab?.addEventListener('click', () => {
         registerTab.classList.add('active');
@@ -811,7 +812,7 @@ const setupAuthHandlers = () => {
         registerForm?.classList.remove('hidden');
         loginForm?.classList.add('hidden');
     });
-    
+
     // Password Strength Checker
     const registerPassword = document.getElementById('register-password');
     const passwordInfoContainer = document.getElementById('password-info-container');
@@ -827,7 +828,7 @@ const setupAuthHandlers = () => {
     const reqLength = document.getElementById('req-length');
     const reqUppercase = document.getElementById('req-uppercase');
     const reqNumber = document.getElementById('req-number');
-    
+
     // Get current language translations
     const getAuthTranslations = () => {
         const lang = localStorage.getItem('optimine-language') || 'id';
@@ -844,7 +845,7 @@ const setupAuthHandlers = () => {
             passwordMismatch: lang === 'en' ? 'Passwords do not match!' : 'Password tidak cocok!'
         };
     };
-    
+
     // Initialize requirement texts
     const initPasswordRequirements = () => {
         const t = getAuthTranslations();
@@ -853,7 +854,7 @@ const setupAuthHandlers = () => {
         if (reqUppercase) reqUppercase.querySelector('span').textContent = t.uppercase;
         if (reqNumber) reqNumber.querySelector('span').textContent = t.number;
     };
-    
+
     const checkPasswordStrength = (password) => {
         const t = getAuthTranslations();
         let strength = 0;
@@ -864,21 +865,21 @@ const setupAuthHandlers = () => {
             special: /[!@#$%^&*(),.?":{}|<>]/.test(password),
             lowercase: /[a-z]/.test(password)
         };
-        
+
         // Update requirement indicators
         updateRequirement(reqLength, checks.length, t.minLength);
         updateRequirement(reqUppercase, checks.uppercase, t.uppercase);
         updateRequirement(reqNumber, checks.number, t.number);
-        
+
         // Calculate strength
         if (checks.length) strength++;
         if (checks.uppercase) strength++;
         if (checks.number) strength++;
         if (checks.special || (checks.lowercase && password.length >= 8)) strength++;
-        
+
         return { strength, checks };
     };
-    
+
     const updateRequirement = (element, isValid, text) => {
         if (!element) return;
         if (isValid) {
@@ -901,7 +902,7 @@ const setupAuthHandlers = () => {
             `;
         }
     };
-    
+
     const updateStrengthUI = (strength) => {
         const t = getAuthTranslations();
         const colors = {
@@ -911,9 +912,9 @@ const setupAuthHandlers = () => {
             3: { bar: 'bg-yellow-500', text: 'text-yellow-500', label: t.fair },
             4: { bar: 'bg-green-500', text: 'text-green-500', label: t.strong }
         };
-        
+
         const config = colors[strength];
-        
+
         // Update bars
         strengthBars.forEach((bar, index) => {
             if (!bar) return;
@@ -924,20 +925,20 @@ const setupAuthHandlers = () => {
                 bar.classList.add('bg-secondary');
             }
         });
-        
+
         // Update text
         if (strengthText) {
             strengthText.textContent = config.label;
             strengthText.className = `text-xs font-medium ${config.text}`;
         }
     };
-    
+
     // Show password info on focus
     registerPassword?.addEventListener('focus', () => {
         initPasswordRequirements();
         passwordInfoContainer?.classList.remove('hidden');
     });
-    
+
     // Hide password info on blur (only if empty)
     registerPassword?.addEventListener('blur', () => {
         if (!registerPassword.value) {
@@ -945,14 +946,14 @@ const setupAuthHandlers = () => {
             strengthContainer?.classList.add('hidden');
         }
     });
-    
+
     registerPassword?.addEventListener('input', (e) => {
         const password = e.target.value;
         const t = getAuthTranslations();
-        
+
         // Always show container when typing
         passwordInfoContainer?.classList.remove('hidden');
-        
+
         if (password.length > 0) {
             strengthContainer?.classList.remove('hidden');
             const { strength } = checkPasswordStrength(password);
@@ -966,13 +967,13 @@ const setupAuthHandlers = () => {
             updateRequirement(reqNumber, false, t.number);
         }
     });
-    
+
     // Show Forgot Password
     forgotPasswordBtn?.addEventListener('click', () => {
         authCard?.classList.add('hidden');
         forgotPasswordCard?.classList.remove('hidden');
     });
-    
+
     // Back to Login from Forgot Password
     backToLoginBtn?.addEventListener('click', () => {
         forgotPasswordCard?.classList.add('hidden');
@@ -983,13 +984,13 @@ const setupAuthHandlers = () => {
         loginForm?.classList.remove('hidden');
         registerForm?.classList.add('hidden');
     });
-    
+
     // Login Form Submit
     loginForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email')?.value;
         const password = document.getElementById('login-password')?.value;
-        
+
         // Add loading state
         const submitBtn = loginForm.querySelector('button[type="submit"]');
         const originalText = submitBtn?.innerHTML;
@@ -1002,16 +1003,16 @@ const setupAuthHandlers = () => {
             `;
             submitBtn.disabled = true;
         }
-        
+
         await App.Presenter.handleLogin(email, password);
-        
+
         // Reset button
         if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
     });
-    
+
     // Register Form Submit
     registerForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -1020,26 +1021,26 @@ const setupAuthHandlers = () => {
         const password = document.getElementById('register-password')?.value;
         const confirmPassword = document.getElementById('register-confirm-password')?.value;
         const role = document.getElementById('register-role')?.value;
-        
+
         // Get translations for error messages
         const t = getAuthTranslations();
-        
+
         // Validate password requirements
         const hasMinLength = password.length >= 6;
         const hasUppercase = /[A-Z]/.test(password);
         const hasNumber = /[0-9]/.test(password);
-        
+
         if (!hasMinLength || !hasUppercase || !hasNumber) {
             // Don't show toast here - let Presenter handle it
             return;
         }
-        
+
         // Validate passwords match
         if (password !== confirmPassword) {
             // Don't show toast here - let Presenter handle it
             return;
         }
-        
+
         // Add loading state
         const submitBtn = registerForm.querySelector('button[type="submit"]');
         const originalText = submitBtn?.innerHTML;
@@ -1052,21 +1053,27 @@ const setupAuthHandlers = () => {
             `;
             submitBtn.disabled = true;
         }
-        
+
         await App.Presenter.handleRegister(name, email, password, role);
-        
+
         // Reset button
         if (submitBtn) {
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
         }
     });
-    
+
     // Forgot Password Form Submit
     forgotPasswordForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.getElementById('forgot-email')?.value;
-        
+        const lang = localStorage.getItem('optimine-language') || 'id';
+
+        if (!email) {
+            App.View.showToast(lang === 'en' ? 'Please enter your email' : 'Silakan masukkan email Anda', 'error');
+            return;
+        }
+
         // Add loading state
         const submitBtn = forgotPasswordForm.querySelector('button[type="submit"]');
         const originalText = submitBtn?.innerHTML;
@@ -1079,19 +1086,37 @@ const setupAuthHandlers = () => {
             `;
             submitBtn.disabled = true;
         }
-        
-        // Simulate password reset (in real app, this would call an API)
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        alert(`Password reset link sent to ${email}`);
-        
-        // Reset button and go back to login
-        if (submitBtn) {
-            submitBtn.innerHTML = originalText;
-            submitBtn.disabled = false;
+
+        try {
+            // Call backend API to send reset password email
+            await API.auth.forgotPassword(email);
+
+            // Show success message
+            App.View.showToast(
+                lang === 'en'
+                    ? 'Password reset link has been sent to your email'
+                    : 'Link reset password telah dikirim ke email Anda',
+                'success'
+            );
+
+            // Clear form and go back to login
+            document.getElementById('forgot-email').value = '';
+            forgotPasswordCard?.classList.add('hidden');
+            authCard?.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('Forgot password error:', error);
+            App.View.showToast(
+                error.message || (lang === 'en' ? 'Failed to send reset link' : 'Gagal mengirim link reset'),
+                'error'
+            );
+        } finally {
+            // Reset button
+            if (submitBtn) {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
         }
-        
-        forgotPasswordCard?.classList.add('hidden');
-        authCard?.classList.remove('hidden');
     });
 };
 
@@ -1102,7 +1127,7 @@ const setupProfileHandlers = () => {
     let logoutBtn = document.getElementById('logout-btn');
     let themeToggle = document.getElementById('profile-theme-toggle');
     const langBtns = document.querySelectorAll('.profile-lang-btn');
-    
+
     // Clone buttons to remove all previous event listeners (prevent duplicate handlers)
     if (logoutBtn) {
         const logoutBtnClone = logoutBtn.cloneNode(true);
@@ -1114,11 +1139,11 @@ const setupProfileHandlers = () => {
         themeToggle.replaceWith(themeToggleClone);
         themeToggle = themeToggleClone;
     }
-    
+
     logoutBtn?.addEventListener('click', () => {
         App.Presenter.handleLogout();
     });
-    
+
     themeToggle?.addEventListener('click', () => {
         App.Model.toggleTheme();
         const dot = themeToggle.querySelector('span');
@@ -1127,7 +1152,7 @@ const setupProfileHandlers = () => {
         dot?.classList.toggle('bg-primary', isDark);
         themeToggle.classList.toggle('bg-primary/30', isDark);
     });
-    
+
     langBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             const lang = btn.dataset.lang;
@@ -1146,11 +1171,11 @@ const setupChatHandlers = () => {
     const sendBtn = document.getElementById('send-btn');
     const messagesContainer = document.getElementById('chat-messages');
     const suggestedPrompts = document.querySelectorAll('.suggested-prompt');
-    
+
     // Function to add a message to chat
     const addMessage = (content, isUser = false) => {
         const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-        
+
         const messageHTML = isUser ? `
             <div class="flex items-start gap-3 justify-end">
                 <div class="flex-1 max-w-[85%] flex flex-col items-end">
@@ -1180,26 +1205,26 @@ const setupChatHandlers = () => {
                 </div>
             </div>
         `;
-        
+
         messagesContainer?.insertAdjacentHTML('beforeend', messageHTML);
-        
+
         // Auto-scroll to bottom
         if (messagesContainer) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
     };
-    
+
     // Function to send message
     const sendMessage = () => {
         const message = chatInput?.value?.trim();
         if (!message) return;
-        
+
         // Add user message
         addMessage(message, true);
-        
+
         // Clear input
         if (chatInput) chatInput.value = '';
-        
+
         // Simulate AI response (in real app, this would call an API)
         setTimeout(() => {
             const responses = [
@@ -1212,10 +1237,10 @@ const setupChatHandlers = () => {
             addMessage(randomResponse, false);
         }, 1000);
     };
-    
+
     // Send button click
     sendBtn?.addEventListener('click', sendMessage);
-    
+
     // Enter key to send
     chatInput?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
@@ -1223,7 +1248,7 @@ const setupChatHandlers = () => {
             sendMessage();
         }
     });
-    
+
     // Suggested prompts click
     suggestedPrompts.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1242,9 +1267,9 @@ const setupChatHandlers = () => {
 export const aboutPage = async (params) => {
     const route = Router.getCurrentRoute();
     const template = templates[route] || templates.planning;
-    
+
     await App.View.render(typeof template === 'function' ? template() : template, route);
-    
+
     // Setup handlers based on route
     if (route === 'auth') {
         setupAuthHandlers();

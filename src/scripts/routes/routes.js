@@ -10,6 +10,7 @@ import { aboutPage } from '../pages/about/about-page.js';
 import { aiToolsPage } from '../pages/ai-tools/ai-tools-page.js';
 import { planningPage } from '../pages/planning/planning-page.js';
 import { authPage } from '../pages/auth/auth-page.js';
+import { resetPasswordPage } from '../pages/auth/reset-password-page.js';
 
 // Routes registry
 const routes = {};
@@ -32,6 +33,7 @@ export const Router = {
         this.register('dashboard', aboutPage);
         this.register('auth', authPage);
         this.register('profile', aboutPage);
+        this.register('reset-password', resetPasswordPage);
 
         // Listen for hash changes
         window.addEventListener('hashchange', () => this.handleRouteChange());

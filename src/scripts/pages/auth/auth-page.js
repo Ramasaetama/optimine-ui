@@ -4,6 +4,7 @@
  */
 
 import { App } from '../../app.js';
+import { API } from '../../data/api.js';
 
 const API_BASE_URL = 'http://139.59.224.58:5000';
 
@@ -34,7 +35,7 @@ function getAuthTemplate() {
                 <div class="glass border border-border rounded-2xl p-6 sm:p-8 animate-fade-in">
                     
                     <!-- Header: Logo + Title -->
-                    <div class="text-center mb-6">
+                    <div id="auth-header" class="text-center mb-6">
                         <div class="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden border-2 border-primary/30 bg-gradient-to-br from-primary/20 to-cyan-500/20 flex items-center justify-center">
                             <img src="assets/images/b (192 x 192 piksel) (1).png" alt="OptiMine Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                             <svg class="w-8 h-8 text-primary" style="display: none;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -80,7 +81,10 @@ function getAuthTemplate() {
                         
                         <!-- Password Input -->
                         <div class="space-y-1.5">
-                            <label for="login-password" class="text-sm font-medium text-foreground">Kata Sandi</label>
+                            <div class="flex items-center justify-between">
+                                <label for="login-password" class="text-sm font-medium text-foreground">Kata Sandi</label>
+                                <button type="button" id="forgot-password-btn" class="text-xs text-primary hover:text-primary/80 transition-colors">Lupa Kata Sandi?</button>
+                            </div>
                             <div class="relative">
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -198,6 +202,59 @@ function getAuthTemplate() {
                         </button>
                     </form>
                     
+                    <!-- FORGOT PASSWORD CARD (shown when forgot password clicked) -->
+                    <div id="forgot-password-card" class="hidden">
+                        <div class="text-center mb-6">
+                            <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/20 flex items-center justify-center">
+                                <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                                </svg>
+                            </div>
+                            <h2 class="text-xl font-bold text-foreground">Lupa Kata Sandi?</h2>
+                            <p class="text-sm text-muted-foreground mt-2">Masukkan email Anda untuk mereset password</p>
+                        </div>
+                        
+                        <form id="forgot-password-form" class="space-y-4">
+                            <div class="space-y-1.5">
+                                <label for="forgot-email" class="text-sm font-medium text-foreground">Email</label>
+                                <div class="relative">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <svg class="w-5 h-5 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <input 
+                                        type="email" 
+                                        id="forgot-email" 
+                                        class="w-full pl-10 pr-4 py-2.5 bg-secondary/30 border border-border rounded-lg text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                                        placeholder="email@example.com"
+                                        required
+                                    >
+                                </div>
+                            </div>
+                            
+                            <button 
+                                type="submit" 
+                                id="forgot-submit"
+                                class="w-full py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-300 glow-hover flex items-center justify-center gap-2"
+                            >
+                                <span>Kirim Link Reset</span>
+                                <svg class="loading-spinner w-5 h-5 animate-spin hidden" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </button>
+                            
+                            <button 
+                                type="button" 
+                                id="back-to-login"
+                                class="w-full py-3 bg-secondary/50 hover:bg-secondary/70 text-foreground border border-border rounded-lg font-medium transition-all duration-300"
+                            >
+                                Kembali ke Login
+                            </button>
+                        </form>
+                    </div>
+                    
                 </div>
             </div>
         </div>
@@ -212,6 +269,7 @@ function initAuthPage() {
     setupLoginForm();
     setupRegisterForm();
     setupPasswordToggles();
+    setupForgotPassword();
 }
 
 /**
@@ -485,4 +543,74 @@ function updateNavbarAuthUI(isLoggedIn, userName) {
         mobileProfileBtn?.classList.add('hidden');
         mobileProfileBtn?.classList.remove('flex');
     }
+}
+
+/**
+ * Setup Forgot Password
+ */
+function setupForgotPassword() {
+    const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+    const forgotPasswordCard = document.getElementById('forgot-password-card');
+    const backToLoginBtn = document.getElementById('back-to-login');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const tabNav = document.querySelector('.grid.grid-cols-2'); // Tab navigation container
+    const authHeader = document.getElementById('auth-header'); // Logo + title header
+
+    // Show forgot password card
+    forgotPasswordBtn?.addEventListener('click', () => {
+        loginForm?.classList.add('hidden');
+        registerForm?.classList.add('hidden');
+        tabNav?.classList.add('hidden');
+        authHeader?.classList.add('hidden'); // Hide logo + title
+        forgotPasswordCard?.classList.remove('hidden');
+    });
+
+    // Back to login
+    backToLoginBtn?.addEventListener('click', () => {
+        forgotPasswordCard?.classList.add('hidden');
+        tabNav?.classList.remove('hidden');
+        authHeader?.classList.remove('hidden'); // Show logo + title
+        loginForm?.classList.remove('hidden');
+    });
+
+    // Submit forgot password form
+    forgotPasswordForm?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('forgot-email')?.value?.trim();
+        const submitBtn = document.getElementById('forgot-submit');
+        const spinner = submitBtn?.querySelector('.loading-spinner');
+
+        if (!email) {
+            App.View.showToast('Silakan masukkan email Anda', 'error');
+            return;
+        }
+
+        // Show loading
+        submitBtn.disabled = true;
+        spinner?.classList.remove('hidden');
+
+        try {
+            // Call backend API
+            await API.auth.forgotPassword(email);
+
+            // Show success message
+            App.View.showToast('Link reset password telah dikirim ke email Anda', 'success');
+
+            // Clear form and go back to login
+            document.getElementById('forgot-email').value = '';
+            forgotPasswordCard?.classList.add('hidden');
+            tabNav?.classList.remove('hidden');
+            loginForm?.classList.remove('hidden');
+
+        } catch (error) {
+            console.error('Forgot password error:', error);
+            App.View.showToast(error.message || 'Gagal mengirim link reset', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            spinner?.classList.add('hidden');
+        }
+    });
 }

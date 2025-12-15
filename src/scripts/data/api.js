@@ -96,7 +96,11 @@ export const API = {
         login: (credentials) => api.post('/auth/login', credentials),
         register: (userData) => api.post('/auth/register', userData),
         logout: () => api.post('/auth/logout'),
-        profile: () => api.get('/auth/profile')
+        profile: () => api.get('/auth/profile'),
+
+        // Password Reset
+        forgotPassword: (email) => api.post('/forgot-password', { email }),
+        resetPassword: (token, newPassword) => api.post('/reset-password', { token, newPassword })
     },
 
     // Mining data endpoints

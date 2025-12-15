@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OptiMine API Tester</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 { color: #22d3ee; margin-bottom: 20px; }
+        h2 { color: #94a3b8; font-size: 14px; margin: 20px 0 10px; text-transform: uppercase; }
+        
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #334155;
+        }
+        
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+        
+        .endpoint-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            width: 100%;
+        }
+        .endpoint-btn:hover { background: #475569; transform: translateY(-1px); }
+        .endpoint-btn:active { transform: translateY(0); }
+        .endpoint-btn.testing { opacity: 0.7; cursor: wait; }
+        .endpoint-btn.success { border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .endpoint-btn.error { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+        
+        .method {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+        .method.GET { background: #22c55e; color: #000; }
+        .method.POST { background: #3b82f6; color: #fff; }
+        .method.PUT { background: #f59e0b; color: #000; }
+        .method.DELETE { background: #ef4444; color: #fff; }
+        
+        .endpoint-name { flex: 1; font-size: 13px; }
+        .endpoint-path { color: #64748b; font-size: 11px; }
+        .endpoint-status { font-size: 12px; font-weight: 600; }
+        
+        #output {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        input, select {
+            padding: 10px 14px;
+            background: #334155;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        input:focus, select:focus { outline: none; border-color: #22d3ee; }
+        input[type="text"], input[type="email"], input[type="password"] { flex: 1; min-width: 200px; }
+        
+        .btn {
+            padding: 10px 20px;
+            background: #22d3ee;
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #06b6d4; }
+        .btn.secondary { background: #475569; color: #e2e8f0; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        
+        .stats {
+            display: flex;
+            gap: 20px;
+            padding: 15px;
+            background: #0f172a;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .stat { text-align: center; }
+        .stat-value { font-size: 24px; font-weight: 700; }
+        .stat-label { font-size: 12px; color: #64748b; }
+        .stat.passed .stat-value { color: #22c55e; }
+        .stat.failed .stat-value { color: #ef4444; }
+        .stat.total .stat-value { color: #22d3ee; }
+        
+        .token-display {
+            background: #0f172a;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            word-break: break-all;
+            margin-top: 10px;
+        }
+        .tabs { display: flex; gap: 5px; margin-bottom: 15px; }
+        .tab {
+            padding: 8px 16px;
+            background: #334155;
+            border: none;
+            border-radius: 6px 6px 0 0;
+            color: #94a3b8;
+            cursor: pointer;
+        }
+        .tab.active { background: #1e293b; color: #22d3ee; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔬 OptiMine API Tester</h1>
+        
+        <!-- Auth Section -->
+        <div class="card">
+            <h2>🔐 Authentication</h2>
+            <div class="input-group">
+                <input type="email" id="email" placeholder="Email" value="test@example.com">
+                <input type="password" id="password" placeholder="Password" value="password123">
+                <button class="btn" onclick="login()">Login</button>
+                <button class="btn secondary" onclick="register()">Register</button>
+            </div>
+            <div id="token-status">
+                <span id="auth-status" style="color: #f59e0b;">⚠️ Not authenticated</span>
+                <div id="token-display" class="token-display" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <!-- Stats -->
+        <div class="stats">
+            <div class="stat total"><div class="stat-value" id="stat-total">0</div><div class="stat-label">Total Tests</div></div>
+            <div class="stat passed"><div class="stat-value" id="stat-passed">0</div><div class="stat-label">Passed</div></div>
+            <div class="stat failed"><div class="stat-value" id="stat-failed">0</div><div class="stat-label">Failed</div></div>
+        </div>
+        
+        <!-- Endpoints -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h2 style="margin: 0;">📡 Endpoints</h2>
+                <button class="btn" onclick="runAllTests()">▶️ Run All Tests</button>
+            </div>
+            
+            <h2>Public Endpoints</h2>
+            <div class="grid" id="public-endpoints"></div>
+            
+            <h2>Authentication & User</h2>
+            <div class="grid" id="auth-endpoints"></div>
+            
+            <h2>Mine Operations</h2>
+            <div class="grid" id="mine-endpoints"></div>
+            
+            <h2>AI Predictions</h2>
+            <div class="grid" id="ai-endpoints"></div>
+        </div>
+        
+        <!-- Output -->
+        <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2 style="margin: 0;">📋 Response Output</h2>
+                <button class="btn secondary" onclick="clearOutput()" style="padding: 6px 12px; font-size: 12px;">Clear</button>
+            </div>
+            <div id="output">Click an endpoint to test...</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://139.59.224.58:5000';
+        let authToken = localStorage.getItem('optimine-token');
+        let stats = { total: 0, passed: 0, failed: 0 };
+        
+        // Endpoint definitions
+        const endpoints = {
+            public: [
+                { method: 'GET', path: '/ai/health', name: 'AI Health' },
+                { method: 'GET', path: '/ai/llm/status', name: 'LLM Status' },
+                { method: 'GET', path: '/ai/rag/health', name: 'RAG Health' },
+                { method: 'GET', path: '/ai/rag/stats', name: 'RAG Stats' },
+            ],
+            auth: [
+                { method: 'GET', path: '/users/1', name: 'Get User Profile', auth: true },
+                { method: 'PUT', path: '/users/1', name: 'Update User Profile', auth: true, body: { nama: 'Test' } },
+                { method: 'DELETE', path: '/logout/1', name: 'Logout', auth: true },
+                { method: 'POST', path: '/forgot-password', name: 'Forgot Password', body: { email: 'test@example.com' } },
+            ],
+            mine: [
+                { method: 'GET', path: '/mines', name: 'Get All Mines', auth: true },
+                { method: 'GET', path: '/mines/1', name: 'Get Mine by ID', auth: true },
+                { method: 'GET', path: '/equipments', name: 'Get Equipments', auth: true },
+                { method: 'GET', path: '/equipments/1', name: 'Get Equipment by ID', auth: true },
+                { method: 'GET', path: '/effective-capacity', name: 'Get Capacity', auth: true },
+                { method: 'GET', path: '/production-constraints', name: 'Get Constraints', auth: true },
+                { method: 'GET', path: '/production-plans', name: 'Get Plans', auth: true },
+                { method: 'GET', path: '/weather', name: 'Get Weather', auth: true },
+                { method: 'GET', path: '/roads', name: 'Get Roads', auth: true },
+                { method: 'GET', path: '/shipping-schedules', name: 'Get Schedules', auth: true },
+            ],
+            ai: [
+                { method: 'POST', path: '/ai/chat', name: 'AI Chat', auth: true, body: { chatInput: 'Test', message: 'Test' } },
+                { method: 'POST', path: '/ai/weather/forecast', name: 'Weather Forecast', auth: true, body: { location: 'Site A' } },
+                { method: 'POST', path: '/ai/weather/classify', name: 'Weather Classify', auth: true, body: { rainfall_mm: 5 } },
+                { method: 'POST', path: '/ai/capacity/predict', name: 'Capacity Predict', auth: true, body: { mine_id: 1 } },
+                { method: 'POST', path: '/ai/production/predict', name: 'Production Predict', auth: true, body: { mine_id: 1 } },
+                { method: 'POST', path: '/ai/recommendations', name: 'AI Recommendations', auth: true, body: { context: 'test' } },
+                { method: 'POST', path: '/ai/llm/recommend', name: 'LLM Recommend', auth: true, body: { prompt: 'test' } },
+                { method: 'POST', path: '/ai/llm/chat', name: 'LLM Chat', auth: true, body: { message: 'test' } },
+                { method: 'POST', path: '/ai/rag/chat', name: 'RAG Chat', auth: true, body: { query: 'test' } },
+                { method: 'POST', path: '/ai/rag/refresh', name: 'RAG Refresh', auth: true, body: {} },
+            ],
+        };
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            renderEndpoints('public-endpoints', endpoints.public);
+            renderEndpoints('auth-endpoints', endpoints.auth);
+            renderEndpoints('mine-endpoints', endpoints.mine);
+            renderEndpoints('ai-endpoints', endpoints.ai);
+            updateAuthStatus();
+        });
+        
+        function renderEndpoints(containerId, eps) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = eps.map((ep, i) => `
+                <button class="endpoint-btn" id="ep-${containerId}-${i}" onclick="testEndpoint('${ep.method}', '${ep.path}', ${ep.auth || false}, ${JSON.stringify(ep.body || null).replace(/"/g, '&quot;')}, this)">
+                    <span class="method ${ep.method}">${ep.method}</span>
+                    <div>
+                        <div class="endpoint-name">${ep.name}</div>
+                        <div class="endpoint-path">${ep.path}</div>
+                    </div>
+                    <span class="endpoint-status"></span>
+                </button>
+            `).join('');
+        }
+        
+        async function testEndpoint(method, path, requireAuth, body, btn) {
+            if (btn) {
+                btn.classList.add('testing');
+                btn.classList.remove('success', 'error');
+            }
+            
+            const headers = { 'Content-Type': 'application/json' };
+            if (requireAuth && authToken) {
+                headers['Authorization'] = `Bearer ${authToken}`;
+            }
+            
+            const config = { method, headers };
+            if (body && (method === 'POST' || method === 'PUT')) {
+                config.body = JSON.stringify(body);
+            }
+            
+            const startTime = Date.now();
+            
+            try {
+                logOutput(`\n🔄 ${method} ${path}`);
+                const response = await fetch(`${API_BASE}${path}`, config);
+                const duration = Date.now() - startTime;
+                
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = { text: await response.text() };
+                }
+                
+                stats.total++;
+                if (response.ok) {
+                    stats.passed++;
+                    logOutput(`✅ ${response.status} (${duration}ms)`);
+                    if (btn) btn.classList.add('success');
+                } else {
+                    stats.failed++;
+                    logOutput(`❌ ${response.status} (${duration}ms)`);
+                    if (btn) btn.classList.add('error');
+                }
+                
+                logOutput(JSON.stringify(data, null, 2));
+                updateStats();
+                
+                if (btn) {
+                    const statusEl = btn.querySelector('.endpoint-status');
+                    statusEl.textContent = response.status;
+                }
+                
+                return { ok: response.ok, status: response.status, data };
+            } catch (error) {
+                stats.total++;
+                stats.failed++;
+                logOutput(`❌ ERROR: ${error.message}`);
+                if (btn) {
+                    btn.classList.add('error');
+                    btn.querySelector('.endpoint-status').textContent = 'ERR';
+                }
+                updateStats();
+                return { ok: false, error: error.message };
+            } finally {
+                if (btn) btn.classList.remove('testing');
+            }
+        }
+        
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const result = await testEndpoint('POST', '/login', false, { email, password });
+            
+            if (result.ok && result.data?.data?.token) {
+                authToken = result.data.data.token;
+                localStorage.setItem('optimine-token', authToken);
+                updateAuthStatus();
+                logOutput('✅ Login successful! Token saved.');
+            }
+        }
+        
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            await testEndpoint('POST', '/register', false, {
+                nama: 'Test User',
+                email,
+                password,
+                role: 'mining_planner'
+            });
+        }
+        
+        async function runAllTests() {
+            stats = { total: 0, passed: 0, failed: 0 };
+            updateStats();
+            clearOutput();
+            
+            const allEndpoints = [...endpoints.public, ...endpoints.auth, ...endpoints.mine, ...endpoints.ai];
+            
+            for (let i = 0; i < allEndpoints.length; i++) {
+                const ep = allEndpoints[i];
+                const btns = document.querySelectorAll('.endpoint-btn');
+                await testEndpoint(ep.method, ep.path, ep.auth, ep.body, btns[i]);
+                await new Promise(r => setTimeout(r, 300)); // Small delay between tests
+            }
+            
+            logOutput('\n' + '='.repeat(40));
+            logOutput(`📊 SUMMARY: ${stats.passed}/${stats.total} passed (${((stats.passed/stats.total)*100).toFixed(1)}%)`);
+        }
+        
+        function updateAuthStatus() {
+            const status = document.getElementById('auth-status');
+            const display = document.getElementById('token-display');
+            
+            if (authToken) {
+                status.innerHTML = '✅ Authenticated';
+                status.style.color = '#22c55e';
+                display.style.display = 'block';
+                display.textContent = `Token: ${authToken.substring(0, 50)}...`;
+            } else {
+                status.innerHTML = '⚠️ Not authenticated';
+                status.style.color = '#f59e0b';
+                display.style.display = 'none';
+            }
+        }
+        
+        function updateStats() {
+            document.getElementById('stat-total').textContent = stats.total;
+            document.getElementById('stat-passed').textContent = stats.passed;
+            document.getElementById('stat-failed').textContent = stats.failed;
+        }
+        
+        function logOutput(text) {
+            const output = document.getElementById('output');
+            output.textContent += text + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearOutput() {
+            document.getElementById('output').textContent = '';
+        }
+    </script>
+</body>
+</html>
